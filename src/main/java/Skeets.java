@@ -1,6 +1,4 @@
-import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.stream.IntStream;
 
 public class Skeets {
     private final TaskList tasks;
