@@ -24,30 +24,30 @@ public class TaskList {
         this.list.add(new Task(description));
     }
 
-    private void validateTaskBasedAction(int oneBasedIndex, BiConsumer<Integer, Task> action)
+    private void validateTaskBasedAction(int oneBasedIndex, BiConsumer<Integer, Task> successAction)
             throws Exception {
         int index = oneBasedIndex - 1;
 
         if (index >= 0 && index < this.list.size()) {
             Task task = this.list.get(index);
-            action.accept(index, task);
+            successAction.accept(index, task);
         } else {
             throw new Exception("Index " + oneBasedIndex + "lies outside of valid range (1-"
                     + this.list.size() + ").");
         }
     }
 
-    public void markTask(int oneBasedIndex, Consumer<Task> action) throws Exception {
+    public void markTask(int oneBasedIndex, Consumer<Task> successAction) throws Exception {
         validateTaskBasedAction(oneBasedIndex, (index, task) -> {
             this.list.set(index, task.markAsComplete());
-            action.accept(this.list.get(index));
+            successAction.accept(this.list.get(index));
         });
     }
 
-    public void unmarkTask(int oneBasedIndex, Consumer<Task> action) throws Exception {
+    public void unmarkTask(int oneBasedIndex, Consumer<Task> successAction) throws Exception {
         validateTaskBasedAction(oneBasedIndex, (index, task) -> {
             this.list.set(index, task.markAsIncomplete());
-            action.accept(this.list.get(index));
+            successAction.accept(this.list.get(index));
         });
     }
 }
