@@ -6,5 +6,6 @@ public class IndividualProject {
         Scanner scanner = new Scanner(System.in);
 
         skeets.activate(scanner);
+        scanner.close();
     }
 }

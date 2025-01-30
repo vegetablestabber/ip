@@ -25,7 +25,6 @@ public class Skeets {
         } while (!isUserExiting(input));
 
         dismissUser();
-        scanner.close();
     }
 
     private void greetUser() {
