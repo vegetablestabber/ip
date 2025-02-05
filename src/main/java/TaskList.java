@@ -20,8 +20,8 @@ public class TaskList {
         return this.list.size();
     }
 
-    public void add(String description) {
-        this.list.add(new Task(description));
+    public void add(Task task) {
+        this.list.add(task);
     }
 
     private void validateTaskBasedAction(int oneBasedIndex, BiConsumer<Integer, Task> successAction)
@@ -32,7 +32,7 @@ public class TaskList {
             Task task = this.list.get(index);
             successAction.accept(index, task);
         } else {
-            throw new Exception("Index " + oneBasedIndex + "lies outside of valid range (1-"
+            throw new Exception("Index " + oneBasedIndex + " lies outside of valid range (1-"
                     + this.list.size() + ").");
         }
     }
