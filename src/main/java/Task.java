@@ -7,6 +7,10 @@ public class Task {
         this.isComplete = isComplete;
     }
 
+    protected Task(Task task) {
+        this(task.description, task.isComplete);
+    }
+
     public Task(String description) {
         this(description, false);
     }
