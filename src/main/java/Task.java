@@ -1,4 +1,5 @@
 public class Task {
+
     private final String description;
     private final boolean isComplete;
 
@@ -28,4 +29,5 @@ public class Task {
     public Task markAsIncomplete() {
         return new Task(this.description, false);
     }
+
 }

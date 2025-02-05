@@ -2,6 +2,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class Skeets {
+
     private final TaskList tasks;
 
     public static final String LOGO = "     ______ ____________________\n" + "    / __/ //_/ __/ __/_  __/ __/\n"
@@ -128,4 +129,5 @@ public class Skeets {
         int oneBasedIndex = Integer.parseInt(args[1]);
         this.tasks.unmarkTask(oneBasedIndex, task -> System.out.println("Updated: " + task));
     }
+
 }

@@ -4,6 +4,7 @@ import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
 public class TaskList {
+
     private final ArrayList<Task> list;
 
     public TaskList(int taskCount) {
@@ -50,4 +51,5 @@ public class TaskList {
             successAction.accept(this.list.get(index));
         });
     }
+
 }

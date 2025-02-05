@@ -1,4 +1,5 @@
 public class ToDo extends Task {
+
     public ToDo(String description) {
         super(description);
     }
@@ -21,4 +22,5 @@ public class ToDo extends Task {
     public ToDo markAsIncomplete() {
         return new ToDo(super.markAsIncomplete());
     }
+
 }

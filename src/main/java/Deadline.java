@@ -1,4 +1,5 @@
 public class Deadline extends Task {
+
     private String dueByDateTime;
 
     public Deadline(String description, String dueByDateTime) {
@@ -25,4 +26,5 @@ public class Deadline extends Task {
     public Deadline markAsIncomplete() {
         return new Deadline(super.markAsIncomplete(), this.dueByDateTime);
     }
+
 }
