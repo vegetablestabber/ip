@@ -92,7 +92,7 @@ public class Skeets {
     }
 
     private void addDeadline(String[] givenArgs) throws Exception {
-        String[] requiredArgs = {"/by"};
+        String[] requiredArgs = { "/by" };
         HashMap<String, String> argMap = ConsoleTools.retriveArgMap(givenArgs, requiredArgs);
 
         String description = argMap.get("");
@@ -102,7 +102,7 @@ public class Skeets {
     }
 
     private void addEvent(String[] givenArgs) throws Exception {
-        String[] requiredArgs = {"/from", "/to"};
+        String[] requiredArgs = { "/from", "/to" };
         HashMap<String, String> argMap = ConsoleTools.retriveArgMap(givenArgs, requiredArgs);
 
         String description = argMap.get("");
