@@ -19,12 +19,24 @@ public class ConsoleTools {
         return IntStream.range(startIndex, endExclusiveIndex)
                 .filter(i -> array[i].toLowerCase().equals(arg))
                 .findFirst()
-                .orElseThrow(() -> new Exception("'" + arg + "' argument missing."));
+                .orElseThrow(() -> {
+                    if (arg.isEmpty()) {
+                        return new Exception("No parameter provided.");
+                    }
+
+                    return new Exception("'" + arg + "' argument missing.");
+                });
     }
 
     // Obtain the argument value for only one implicit argument
-    public static String retriveArgValue(String[] givenArgs) {
-        return combineSpacedStrings(givenArgs, 1, givenArgs.length);
+    public static String retriveArgValue(String[] givenArgs) throws Exception {
+        String argValue = combineSpacedStrings(givenArgs, 1, givenArgs.length);
+
+        if (argValue.isEmpty()) {
+            throw new Exception("No parameter provided.");
+        }
+
+        return argValue;
     }
 
     // Obtain the argument values as a map for an array of required arguments
