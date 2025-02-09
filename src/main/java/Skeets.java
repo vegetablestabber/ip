@@ -86,7 +86,7 @@ public class Skeets {
         System.out.println("Added: " + task);
     }
 
-    private void addToDo(String[] givenArgs) {
+    private void addToDo(String[] givenArgs) throws Exception {
         String description = ConsoleTools.retriveArgValue(givenArgs);
         addTask(new ToDo(description));
     }
@@ -112,21 +112,22 @@ public class Skeets {
         addTask(new Event(description, startDateTime, endDateTime));
     }
 
-    private void markTask(String[] args) throws Exception {
-        if (args.length != 2) {
-            throw new Exception("Not enough arguments (actual: " + args.length + ", expected: 2).");
+    private void markTask(String[] givenArgs) throws Exception {
+        if (givenArgs.length != 2) {
+            throw new Exception("Does not meet the required number of arguments (actual: "
+                    + givenArgs.length + ", expected: 2).");
         }
 
-        int oneBasedIndex = Integer.parseInt(args[1]);
+        int oneBasedIndex = Integer.parseInt(givenArgs[1]);
         this.tasks.markTask(oneBasedIndex, task -> System.out.println("Updated: " + task));
     }
 
-    private void unmarkTask(String[] args) throws Exception {
-        if (args.length != 2) {
-            throw new Exception("Not enough arguments (actual: " + args.length + ", expected: 2).");
+    private void unmarkTask(String[] givenArgs) throws Exception {
+        if (givenArgs.length != 2) {
+            throw new Exception("Not enough arguments (actual: " + givenArgs.length + ", expected: 2).");
         }
 
-        int oneBasedIndex = Integer.parseInt(args[1]);
+        int oneBasedIndex = Integer.parseInt(givenArgs[1]);
         this.tasks.unmarkTask(oneBasedIndex, task -> System.out.println("Updated: " + task));
     }
 
