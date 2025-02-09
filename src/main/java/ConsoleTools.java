@@ -6,12 +6,17 @@ import java.util.stream.IntStream;
 public class ConsoleTools {
 
     // Combine strings with a space in between
-    private static String combineSpacedStrings(String[] array, int startIndex, int endExclusiveIndex) {
+    private static String combineSpacedStrings(String[] array, int startIndex, int endExclusiveIndex) throws Exception {
         StringJoiner sj = new StringJoiner(" ");
         IntStream.range(startIndex, endExclusiveIndex)
                 .forEach(i -> sj.add(array[i]));
+        String str = sj.toString().trim();
 
-        return sj.toString();
+        if (str.isEmpty()) {
+            throw new Exception("Empty value provided.");
+        }
+
+        return str;
     }
 
     // Find the index of an argument in a String array
@@ -19,13 +24,7 @@ public class ConsoleTools {
         return IntStream.range(startIndex, endExclusiveIndex)
                 .filter(i -> array[i].toLowerCase().equals(arg))
                 .findFirst()
-                .orElseThrow(() -> {
-                    if (arg.isEmpty()) {
-                        return new Exception("No parameter provided.");
-                    }
-
-                    return new Exception("'" + arg + "' argument missing.");
-                });
+                .orElseThrow(() -> new Exception("'" + arg + "' argument missing."));
     }
 
     // Obtain the argument value for only one implicit argument
