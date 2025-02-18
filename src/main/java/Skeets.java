@@ -58,6 +58,9 @@ public class Skeets {
             case "event":
                 addEvent(givenArgs);
                 break;
+            case "delete":
+                deleteTask(givenArgs);
+                break;
             case "list":
                 listTasks();
                 break;
@@ -110,6 +113,11 @@ public class Skeets {
         String endDateTime = argMap.get("/to");
 
         addTask(new Event(description, startDateTime, endDateTime));
+    }
+
+    private void deleteTask(String[] givenArgs) throws Exception {
+        int oneBasedIndex = ConsoleTools.retriveIntArg(givenArgs);
+        this.tasks.delete(oneBasedIndex, task -> System.out.println("Deleted: " + task));
     }
 
     private void markTask(String[] givenArgs) throws Exception {

@@ -33,9 +33,20 @@ public class TaskList {
             Task task = this.list.get(index);
             successAction.accept(index, task);
         } else {
-            throw new Exception("Index " + oneBasedIndex + " lies outside of valid range (1-"
-                    + this.list.size() + ").");
+            String errorMessage = this.list.isEmpty()
+                ? "You have no tasks."
+                : "Index " + oneBasedIndex + " lies outside of valid range (1-"
+                    + this.list.size() + ").";
+
+            throw new Exception(errorMessage);
         }
+    }
+
+    public void delete(int oneBasedIndex, Consumer<Task> successAction) throws Exception {
+        validateTaskBasedAction(oneBasedIndex, (index, task) -> {
+            this.list.remove(task);
+            successAction.accept(task);
+        });
     }
 
     public void markTask(int oneBasedIndex, Consumer<Task> successAction) throws Exception {
