@@ -13,7 +13,9 @@ public class TaskList {
 
     @Override
     public String toString() {
-        return String.join("\n", IntStream.range(0, this.list.size())
+        return this.list.isEmpty()
+            ? "No tasks present."
+            : String.join("\n", IntStream.range(0, this.list.size())
                 .mapToObj(i -> (i + 1) + ". " + this.list.get(i)).toList());
     }
 
