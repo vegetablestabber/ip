@@ -1,3 +1,5 @@
+import java.util.StringJoiner;
+
 public class Event extends Task {
 
     private String startDateTime;
@@ -19,6 +21,17 @@ public class Event extends Task {
     public String toString() {
         return "[E]" + super.toString() + " (from: " + startDateTime
             + " to: " + endDateTime + ")";
+    }
+
+    @Override
+    public String getRawString() {
+        StringJoiner sj = new StringJoiner(DataManager.DELIMITER);
+        sj.add("E");
+        sj.add(super.getRawString());
+        sj.add(startDateTime);
+        sj.add(endDateTime);
+
+        return sj.toString();
     }
 
     @Override

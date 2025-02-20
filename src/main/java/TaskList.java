@@ -7,8 +7,8 @@ public class TaskList {
 
     private final ArrayList<Task> list;
 
-    public TaskList(int taskCount) {
-        this.list = new ArrayList<>(taskCount);
+    public TaskList() {
+        this.list = new ArrayList<>();
     }
 
     @Override
@@ -17,6 +17,12 @@ public class TaskList {
             ? "No tasks present."
             : String.join("\n", IntStream.range(0, this.list.size())
                 .mapToObj(i -> (i + 1) + ". " + this.list.get(i)).toList());
+    }
+
+    public String getRawString() {
+        return String.join("\n", this.list.stream()
+                .map(task -> task.getRawString())
+                .toList());
     }
 
     public int size() {

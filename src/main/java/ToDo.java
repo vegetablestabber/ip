@@ -1,3 +1,5 @@
+import java.util.StringJoiner;
+
 public class ToDo extends Task {
 
     public ToDo(String description) {
@@ -11,6 +13,15 @@ public class ToDo extends Task {
     @Override
     public String toString() {
         return "[T]" + super.toString();
+    }
+
+    @Override
+    public String getRawString() {
+        StringJoiner sj = new StringJoiner(DataManager.DELIMITER);
+        sj.add("T");
+        sj.add(super.getRawString());
+
+        return sj.toString();
     }
 
     @Override
