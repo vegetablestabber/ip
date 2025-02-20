@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -8,14 +9,22 @@ public class Skeets {
     public static final String LOGO = "     ______ ____________________\n" + "    / __/ //_/ __/ __/_  __/ __/\n"
             + "   _\\ \\/ ,< / _// _/  / / _\\ \\  \n" + "  /___/_/|_/___/___/ /_/ /___/  ";
 
-    public Skeets(int taskCount) {
-        this.tasks = new TaskList(taskCount);
+    public Skeets() {
+        TaskList tasks = new TaskList();
+
+        try {
+            tasks = DataManager.readData();
+        } catch (IOException e) {
+
+        }
+
+        this.tasks = tasks;
     }
 
     public void activate(Scanner scanner) {
         greetUser();
-        String input;
 
+        String input;
         do {
             input = requestUserInput(scanner);
 
@@ -27,6 +36,12 @@ public class Skeets {
         } while (!isUserExiting(input));
 
         dismissUser();
+
+        try {
+            DataManager.writeData(this.tasks);
+        } catch (IOException e) {
+
+        }
     }
 
     private void greetUser() {

@@ -1,3 +1,5 @@
+import java.util.StringJoiner;
+
 public class Deadline extends Task {
 
     private String dueByDateTime;
@@ -10,6 +12,16 @@ public class Deadline extends Task {
     private Deadline(Task deadline, String dueByDateTime) {
         super(deadline);
         this.dueByDateTime = dueByDateTime;
+    }
+
+    @Override
+    public String getRawString() {
+        StringJoiner sj = new StringJoiner(DataManager.DELIMITER);
+        sj.add("D");
+        sj.add(super.getRawString());
+        sj.add(dueByDateTime);
+
+        return sj.toString();
     }
 
     @Override
