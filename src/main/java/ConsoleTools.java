@@ -38,6 +38,20 @@ public class ConsoleTools {
         return argValue;
     }
 
+    // Obtain an integer argument
+    public static int retriveIntArg(String[] givenArgs) throws Exception {
+        String argValue = retriveArgValue(givenArgs);
+        int arg;
+
+        try {
+            arg = Integer.parseInt(argValue);
+        } catch (Exception e) {
+            throw new Exception("'" + argValue + "' is not a valid number.");
+        }
+
+        return arg;
+    }
+
     // Obtain the argument values as a map for an array of required arguments
     public static HashMap<String, String> retriveArgMap(String[] givenArgs, String[] requiredArgs,
             boolean hasImplicitInitialArg) throws Exception {
