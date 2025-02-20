@@ -1,9 +1,11 @@
+package io;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.StringJoiner;
 import java.util.stream.IntStream;
 
-public class ConsoleTools {
+public class CommandReader {
 
     // Combine strings with a space in between
     private static String combineSpacedStrings(String[] array, int startIndex, int endExclusiveIndex) throws Exception {

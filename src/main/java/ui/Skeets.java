@@ -1,6 +1,16 @@
+package ui;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
+
+import io.CommandReader;
+import io.DataManager;
+import task.Deadline;
+import task.Event;
+import task.Task;
+import task.TaskList;
+import task.ToDo;
 
 public class Skeets {
 
@@ -105,13 +115,13 @@ public class Skeets {
     }
 
     private void addToDo(String[] givenArgs) throws Exception {
-        String description = ConsoleTools.retriveArgValue(givenArgs);
+        String description = CommandReader.retriveArgValue(givenArgs);
         addTask(new ToDo(description));
     }
 
     private void addDeadline(String[] givenArgs) throws Exception {
         String[] requiredArgs = { "/by" };
-        HashMap<String, String> argMap = ConsoleTools.retriveArgMap(givenArgs, requiredArgs);
+        HashMap<String, String> argMap = CommandReader.retriveArgMap(givenArgs, requiredArgs);
 
         String description = argMap.get("");
         String dueByDateTime = argMap.get("/by");
@@ -121,7 +131,7 @@ public class Skeets {
 
     private void addEvent(String[] givenArgs) throws Exception {
         String[] requiredArgs = { "/from", "/to" };
-        HashMap<String, String> argMap = ConsoleTools.retriveArgMap(givenArgs, requiredArgs);
+        HashMap<String, String> argMap = CommandReader.retriveArgMap(givenArgs, requiredArgs);
 
         String description = argMap.get("");
         String startDateTime = argMap.get("/from");
@@ -131,7 +141,7 @@ public class Skeets {
     }
 
     private void deleteTask(String[] givenArgs) throws Exception {
-        int oneBasedIndex = ConsoleTools.retriveIntArg(givenArgs);
+        int oneBasedIndex = CommandReader.retriveIntArg(givenArgs);
         this.tasks.delete(oneBasedIndex, task -> System.out.println("Deleted: " + task));
     }
 

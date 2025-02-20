@@ -1,3 +1,4 @@
+package task;
 import java.util.ArrayList;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
