@@ -1,74 +1,87 @@
 package task;
 import java.util.ArrayList;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
+import java.util.function.BiFunction;
+import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
 public class TaskList {
 
     private final ArrayList<Task> list;
 
+    private TaskList(ArrayList<Task> list) {
+        this.list = list;
+    }
+
     public TaskList() {
-        this.list = new ArrayList<>();
+        this(new ArrayList<>());
+    }
+
+    public static TaskList copyOf(TaskList tasks) {
+        return new TaskList(new ArrayList<>(tasks.list));
     }
 
     @Override
     public String toString() {
-        return this.list.isEmpty()
-            ? "No tasks present."
-            : String.join("\n", IntStream.range(0, this.list.size())
-                .mapToObj(i -> (i + 1) + ". " + this.list.get(i)).toList());
+        if (this.list.isEmpty()) {
+            return "No tasks present.";
+        }
+
+        return String.join("\n", IntStream.range(0, this.list.size())
+            .mapToObj(i -> (i + 1) + ". " + this.list.get(i)).toList());
     }
 
     public String getRawString() {
         return String.join("\n", this.list.stream()
-                .map(task -> task.getRawString())
-                .toList());
+            .map(task -> task.getRawString())
+            .toList());
     }
 
-    public int size() {
-        return this.list.size();
+    private <T> T validateAndMapTask(int oneBasedIndex, BiFunction<Integer, Task, T> successAction)
+        throws IllegalStateException, IndexOutOfBoundsException {
+        int index = oneBasedIndex - 1;
+
+        if (index >= 0 && index < this.list.size()) {
+            Task task = this.list.get(index);
+            return successAction.apply(index, task);
+        }
+
+        if (this.list.isEmpty()) {
+            throw new IllegalStateException("You have no tasks.");
+        }
+
+        throw new IndexOutOfBoundsException("Index " + oneBasedIndex +
+            " lies outside of valid range (1-" + this.list.size() + ").");
+    }
+
+    public Task get(int oneBasedIndex) throws IndexOutOfBoundsException {
+        return this.validateAndMapTask(oneBasedIndex, (index, task) -> task);
     }
 
     public void add(Task task) {
         this.list.add(task);
     }
 
-    private void validateTaskBasedAction(int oneBasedIndex, BiConsumer<Integer, Task> successAction)
-            throws Exception {
-        int index = oneBasedIndex - 1;
-
-        if (index >= 0 && index < this.list.size()) {
-            Task task = this.list.get(index);
-            successAction.accept(index, task);
-        } else {
-            String errorMessage = this.list.isEmpty()
-                ? "You have no tasks."
-                : "Index " + oneBasedIndex + " lies outside of valid range (1-"
-                    + this.list.size() + ").";
-
-            throw new Exception(errorMessage);
-        }
-    }
-
-    public void delete(int oneBasedIndex, Consumer<Task> successAction) throws Exception {
-        validateTaskBasedAction(oneBasedIndex, (index, task) -> {
+    public <T> T delete(int oneBasedIndex, Supplier<T> successSupplier)
+        throws IndexOutOfBoundsException {
+        return validateAndMapTask(oneBasedIndex, (index, task) -> {
             this.list.remove(task);
-            successAction.accept(task);
+            return successSupplier.get();
         });
     }
 
-    public void markTask(int oneBasedIndex, Consumer<Task> successAction) throws Exception {
-        validateTaskBasedAction(oneBasedIndex, (index, task) -> {
+    public <T> T mark(int oneBasedIndex, Supplier<T> successSupplier)
+        throws IndexOutOfBoundsException {
+        return validateAndMapTask(oneBasedIndex, (index, task) -> {
             this.list.set(index, task.markAsComplete());
-            successAction.accept(this.list.get(index));
+            return successSupplier.get();
         });
     }
 
-    public void unmarkTask(int oneBasedIndex, Consumer<Task> successAction) throws Exception {
-        validateTaskBasedAction(oneBasedIndex, (index, task) -> {
+    public <T> T unmark(int oneBasedIndex, Supplier<T> successSupplier)
+        throws IndexOutOfBoundsException {
+        return validateAndMapTask(oneBasedIndex, (index, task) -> {
             this.list.set(index, task.markAsIncomplete());
-            successAction.accept(this.list.get(index));
+            return successSupplier.get();
         });
     }
 

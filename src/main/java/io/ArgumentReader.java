@@ -5,63 +5,62 @@ import java.util.HashMap;
 import java.util.StringJoiner;
 import java.util.stream.IntStream;
 
-public class CommandReader {
+import error.AppException;
+import error.ArgMapForNoArgsException;
+import error.MissingArgumentException;
+
+public class ArgumentReader {
 
     // Combine strings with a space in between
-    private static String combineSpacedStrings(String[] array, int startIndex, int endExclusiveIndex) throws Exception {
+    private static String combineSpacedStrings(String[] array, int startIndex,
+        int endExclusiveIndex) throws IllegalArgumentException {
         StringJoiner sj = new StringJoiner(" ");
         IntStream.range(startIndex, endExclusiveIndex)
                 .forEach(i -> sj.add(array[i]));
         String str = sj.toString().trim();
 
         if (str.isEmpty()) {
-            throw new Exception("Empty value provided.");
+            throw new IllegalArgumentException("Empty value provided.");
         }
 
         return str;
     }
 
     // Find the index of an argument in a String array
-    private static int indexOfArg(String arg, String[] array, int startIndex, int endExclusiveIndex) throws Exception {
+    private static int indexOfArg(String arg, String[] array, int startIndex,
+        int endExclusiveIndex) throws MissingArgumentException {
         return IntStream.range(startIndex, endExclusiveIndex)
                 .filter(i -> array[i].toLowerCase().equals(arg))
                 .findFirst()
-                .orElseThrow(() -> new Exception("'" + arg + "' argument missing."));
+                .orElseThrow(() -> new MissingArgumentException(arg));
     }
 
     // Obtain the argument value for only one implicit argument
-    public static String retriveArgValue(String[] givenArgs) throws Exception {
+    public static String retriveArgValue(String[] givenArgs) throws MissingArgumentException {
         String argValue = combineSpacedStrings(givenArgs, 1, givenArgs.length);
 
         if (argValue.isEmpty()) {
-            throw new Exception("No parameter provided.");
+            throw new MissingArgumentException();
         }
 
         return argValue;
     }
 
     // Obtain an integer argument
-    public static int retriveIntArg(String[] givenArgs) throws Exception {
+    public static int retriveIntArg(String[] givenArgs)
+        throws MissingArgumentException, NumberFormatException {
         String argValue = retriveArgValue(givenArgs);
-        int arg;
-
-        try {
-            arg = Integer.parseInt(argValue);
-        } catch (Exception e) {
-            throw new Exception("'" + argValue + "' is not a valid number.");
-        }
-
-        return arg;
+        return Integer.parseInt(argValue);
     }
 
     // Obtain the argument values as a map for an array of required arguments
     public static HashMap<String, String> retriveArgMap(String[] givenArgs, String[] requiredArgs,
-            boolean hasImplicitInitialArg) throws Exception {
+            boolean hasImplicitInitialArg) throws AppException {
         // Number of arguments required for command
         int requiredArgCount = requiredArgs.length + (hasImplicitInitialArg ? 1 : 0);
 
         if (requiredArgs.length == 0) {
-            throw new Exception("Cannot return argument map for empty required argument array.");
+            throw new ArgMapForNoArgsException();
         }
 
         // Number of split strings from input
@@ -102,7 +101,8 @@ public class CommandReader {
         return argMap;
     }
 
-    public static HashMap<String, String> retriveArgMap(String[] givenArgs, String[] requiredArgs) throws Exception {
+    public static HashMap<String, String> retriveArgMap(String[] givenArgs,
+        String[] requiredArgs) throws AppException {
         return retriveArgMap(givenArgs, requiredArgs, true);
     }
 

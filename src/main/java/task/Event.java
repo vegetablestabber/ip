@@ -6,8 +6,8 @@ import io.DataManager;
 
 public class Event extends Task {
 
-    private String startDateTime;
-    private String endDateTime;
+    private final String startDateTime;
+    private final String endDateTime;
 
     public Event(String description, String startDateTime, String endDateTime) {
         super(description);

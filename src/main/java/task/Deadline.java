@@ -6,7 +6,7 @@ import io.DataManager;
 
 public class Deadline extends Task {
 
-    private String dueByDateTime;
+    private final String dueByDateTime;
 
     public Deadline(String description, String dueByDateTime) {
         super(description);
