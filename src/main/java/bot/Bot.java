@@ -1,27 +1,29 @@
-package ui;
+package bot;
 
-import java.io.IOException;
-
-import command.*;
+import command.AddCommand;
+import command.AddDeadlineCommand;
+import command.AddEventCommand;
+import command.AddToDoCommand;
+import command.Command;
+import command.DeleteCommand;
+import command.ExitCommand;
+import command.ListCommand;
+import command.MarkCommand;
+import command.UnmarkCommand;
 import error.AppException;
 import error.MissingArgumentException;
-import io.DataManager;
 import task.TaskList;
 
 public class Bot {
 
     private final TaskList tasks;
 
-    public Bot() {
-        TaskList tasks = new TaskList();
-
-        try {
-            tasks = DataManager.readData();
-        } catch (IOException e) {
-
-        }
-
+    public Bot(TaskList tasks) {
         this.tasks = tasks;
+    }
+
+    public TaskList getTasks() {
+        return this.tasks;
     }
 
     public Command handleUserInput(String input) throws AppException {

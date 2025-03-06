@@ -9,7 +9,7 @@ import error.AppException;
 import error.ArgMapForNoArgsException;
 import error.MissingArgumentException;
 
-public class ArgumentReader {
+public class LineReader {
 
     // Combine strings with a space in between
     private static String combineSpacedStrings(String[] array, int startIndex,

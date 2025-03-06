@@ -1,4 +1,5 @@
 package task;
+
 import java.util.ArrayList;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
@@ -27,17 +28,21 @@ public class TaskList {
         }
 
         return String.join("\n", IntStream.range(0, this.list.size())
-            .mapToObj(i -> (i + 1) + ". " + this.list.get(i)).toList());
+                .mapToObj(i -> (i + 1) + ". " + this.list.get(i)).toList());
     }
 
     public String getRawString() {
         return String.join("\n", this.list.stream()
-            .map(task -> task.getRawString())
-            .toList());
+                .map(task -> task.getRawString())
+                .toList());
+    }
+
+    public int size() {
+        return this.list.size();
     }
 
     private <T> T validateAndMapTask(int oneBasedIndex, BiFunction<Integer, Task, T> successAction)
-        throws IllegalStateException, IndexOutOfBoundsException {
+            throws IllegalStateException, IndexOutOfBoundsException {
         int index = oneBasedIndex - 1;
 
         if (index >= 0 && index < this.list.size()) {
@@ -50,7 +55,7 @@ public class TaskList {
         }
 
         throw new IndexOutOfBoundsException("Index " + oneBasedIndex +
-            " lies outside of valid range (1-" + this.list.size() + ").");
+                " lies outside of valid range (1-" + this.list.size() + ").");
     }
 
     public Task get(int oneBasedIndex) throws IndexOutOfBoundsException {
@@ -62,7 +67,7 @@ public class TaskList {
     }
 
     public <T> T delete(int oneBasedIndex, Supplier<T> successSupplier)
-        throws IndexOutOfBoundsException {
+            throws IndexOutOfBoundsException {
         return validateAndMapTask(oneBasedIndex, (index, task) -> {
             this.list.remove(task);
             return successSupplier.get();
@@ -70,7 +75,7 @@ public class TaskList {
     }
 
     public <T> T mark(int oneBasedIndex, Supplier<T> successSupplier)
-        throws IndexOutOfBoundsException {
+            throws IndexOutOfBoundsException {
         return validateAndMapTask(oneBasedIndex, (index, task) -> {
             this.list.set(index, task.markAsComplete());
             return successSupplier.get();
@@ -78,7 +83,7 @@ public class TaskList {
     }
 
     public <T> T unmark(int oneBasedIndex, Supplier<T> successSupplier)
-        throws IndexOutOfBoundsException {
+            throws IndexOutOfBoundsException {
         return validateAndMapTask(oneBasedIndex, (index, task) -> {
             this.list.set(index, task.markAsIncomplete());
             return successSupplier.get();

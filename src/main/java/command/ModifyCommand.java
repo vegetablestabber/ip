@@ -1,7 +1,7 @@
 package command;
 
 import error.MissingArgumentException;
-import io.ArgumentReader;
+import io.LineReader;
 import task.Task;
 import task.TaskList;
 
@@ -15,7 +15,7 @@ public abstract class ModifyCommand extends Command {
 
     public int getTaskIndex() throws MissingArgumentException,
         IndexOutOfBoundsException,NumberFormatException {
-        return ArgumentReader.retriveIntArg(args);
+        return LineReader.retriveIntArg(args);
     }
 
     public Task getTask() throws NumberFormatException,

@@ -2,11 +2,13 @@ package task;
 
 import java.util.StringJoiner;
 
-import io.DataManager;
+import storage.TaskReader;
 
 public class Deadline extends Task {
 
     private final String dueByDateTime;
+
+    public static final String LINE_ID = "D";
 
     public Deadline(String description, String dueByDateTime) {
         super(description);
@@ -20,8 +22,8 @@ public class Deadline extends Task {
 
     @Override
     public String getRawString() {
-        StringJoiner sj = new StringJoiner(DataManager.DELIMITER);
-        sj.add("D");
+        StringJoiner sj = new StringJoiner(TaskReader.DELIMITER);
+        sj.add(LINE_ID);
         sj.add(super.getRawString());
         sj.add(dueByDateTime);
 

@@ -2,7 +2,7 @@ package task;
 
 import java.util.StringJoiner;
 
-import io.DataManager;
+import storage.TaskReader;
 
 public class Task {
 
@@ -29,7 +29,7 @@ public class Task {
     }
 
     public String getRawString() {
-        StringJoiner sj = new StringJoiner(DataManager.DELIMITER);
+        StringJoiner sj = new StringJoiner(TaskReader.DELIMITER);
         sj.add(this.isComplete + "");
         sj.add(this.description);
 

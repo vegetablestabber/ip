@@ -2,9 +2,11 @@ package task;
 
 import java.util.StringJoiner;
 
-import io.DataManager;
+import storage.TaskReader;
 
 public class ToDo extends Task {
+
+    public static final String LINE_ID = "T";
 
     public ToDo(String description) {
         super(description);
@@ -21,8 +23,8 @@ public class ToDo extends Task {
 
     @Override
     public String getRawString() {
-        StringJoiner sj = new StringJoiner(DataManager.DELIMITER);
-        sj.add("T");
+        StringJoiner sj = new StringJoiner(TaskReader.DELIMITER);
+        sj.add(LINE_ID);
         sj.add(super.getRawString());
 
         return sj.toString();

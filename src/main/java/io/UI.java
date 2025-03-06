@@ -1,23 +1,29 @@
-package ui;
+package io;
 
 import java.util.Scanner;
 
+import bot.Bot;
 import command.Command;
 import command.ExitCommand;
 import error.AppException;
+import storage.TaskReader;
+import storage.TaskWriter;
+import task.TaskList;
 
 public class UI {
-
-    private final Bot bot;
 
     public static final String LOGO = "     ______ ____________________\n" + "    / __/ //_/ __/ __/_  __/ __/\n"
             + "   _\\ \\/ ,< / _// _/  / / _\\ \\  \n" + "  /___/_/|_/___/___/ /_/ /___/  ";
 
-    public UI(Bot bot) {
-        this.bot = bot;
+    public TaskList readFromStorage(String dataPathString) {
+        System.out.println("Reading from local data...");
+
+        return TaskReader.read(dataPathString,
+                count -> System.out.println("Successfully read *" + count + "* tasks!"),
+                () -> System.out.println("Unable to read any tasks."));
     }
 
-    public void activate() {
+    public void connect(Bot bot) {
         greetUser();
         Scanner scanner = new Scanner(System.in);
 
@@ -36,6 +42,14 @@ public class UI {
         } while (!isUserExiting(input));
 
         scanner.close();
+    }
+
+    public void writeToStorage(TaskList tasks, String dataPathString) {
+        System.out.println("Writing to local data...");
+
+        TaskWriter.writeData(tasks, dataPathString,
+                count -> System.out.println("Successfully wrote *" + count + "* tasks!"),
+                () -> System.out.println("Unable to write any tasks."));
     }
 
     private void greetUser() {
