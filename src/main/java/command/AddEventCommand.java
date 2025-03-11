@@ -6,14 +6,28 @@ import java.util.HashMap;
 import io.LineReader;
 import task.Event;
 
+/**
+ * Represents a command to add an event task.
+ */
 public class AddEventCommand extends AddCommand {
 
     public static final String CLI_REPRESENTATION = "event";
 
+    /**
+     * Constructs an AddEventCommand with the specified arguments.
+     *
+     * @param args The arguments for the command.
+     */
     public AddEventCommand(String[] args) {
         super(args);
     }
 
+    /**
+     * Returns the event task that was added.
+     *
+     * @return The added event task.
+     * @throws AppException If there is an error getting the added task.
+     */
     @Override
     public Event getAddedTask() throws IllegalArgumentException, DateTimeParseException {
         String[] requiredArgs = { "/from", "/to" };

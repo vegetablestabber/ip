@@ -11,19 +11,30 @@ import java.time.format.DateTimeFormatter;
 import io.UI;
 import task.TaskList;
 
+/**
+ * Writes tasks to a file.
+ */
 public class TaskWriter {
 
-    private static final String DATE_FORMAT = "yyyy-MM-dd";
+    public static final String DATE_FORMAT = "yyyy-MM-dd";
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(DATE_FORMAT);
 
-    public static String getDateFormat() {
-        return DATE_FORMAT;
-    }
-
+    /**
+     * Formats a LocalDate to a string.
+     *
+     * @param date The date to be formatted.
+     */
     public static String formatDate(LocalDate date) {
         return DATE_FORMATTER.format(date);
     }
 
+    /**
+     * Writes the tasks to the specified file.
+     *
+     * @param tasks The list of tasks.
+     * @param dataPathString The path to the file.
+     * @param ui The UI for displaying messages.
+     */
     public static void write(TaskList tasks, String dataPathString, UI ui) {
         ui.printWriteInitialisation();
 

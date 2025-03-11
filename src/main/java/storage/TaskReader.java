@@ -16,10 +16,19 @@ import task.Task;
 import task.TaskList;
 import task.ToDo;
 
+/**
+ * Reads tasks from a file.
+ */
 public class TaskReader {
 
     public static final String DELIMITER = "|";
 
+    /**
+     * Reads a task from a line of text.
+     *
+     * @param line The line of text.
+     * @return An Optional containing the task if it was successfully read, or an empty Optional if not.
+     */
     private static Optional<Task> readTaskFromLine(String line) {
         String[] args = line.split(Pattern.quote(DELIMITER));
         String taskType = args[0];
@@ -51,6 +60,13 @@ public class TaskReader {
         return task;
     }
 
+    /**
+     * Reads the tasks from the specified file.
+     *
+     * @param dataPathString The path to the file.
+     * @param ui The UI for displaying messages.
+     * @return The list of tasks.
+     */
     public static TaskList read(String dataPathString, UI ui) {
         ui.printReadInitialisation();
 
