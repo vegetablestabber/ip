@@ -1,11 +1,13 @@
 package storage;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 import io.UI;
 import task.Deadline;
@@ -19,7 +21,7 @@ public class TaskReader {
     public static final String DELIMITER = "|";
 
     private static Optional<Task> readTaskFromLine(String line) {
-        String[] args = line.split(DELIMITER);
+        String[] args = line.split(Pattern.quote(DELIMITER));
         String taskType = args[0];
         boolean isComplete = Boolean.parseBoolean(args[1]);
         String description = args[2];
@@ -49,25 +51,36 @@ public class TaskReader {
     }
 
     public static TaskList read(String dataPathString, UI ui) {
+        ui.printReadInitialisation();
+
         BufferedReader reader;
         TaskList tasks = new TaskList();
 
         try {
             Path dataPath = Paths.get(dataPathString);
-            Files.createDirectories(dataPath);
+            Files.createDirectories(dataPath.getParent());
 
-            reader = Files.newBufferedReader(dataPath);
-            boolean isEmpty = !reader.lines().anyMatch(line -> true);
-
-            if (isEmpty) {
-                reader.close();
-                ui.printReadInitialisation();
+            if (Files.notExists(dataPath)) {
+                ui.printDidNotRead();
                 return new TaskList();
             }
 
-            reader.lines().forEach(line -> readTaskFromLine(line).ifPresent(t -> tasks.add(t)));
+            reader = new BufferedReader(new FileReader(dataPathString));
+            boolean isEmpty = reader.readLine() == null;
             reader.close();
 
+            if (isEmpty) {
+                ui.printFileReadIsEmpty();
+                return new TaskList();
+            }
+
+            reader = new BufferedReader(new FileReader(dataPathString));
+            reader.lines().forEach(line -> {
+                Optional<Task> task = readTaskFromLine(line);
+                task.ifPresent(t -> tasks.add(t));
+            });
+
+            reader.close();
             ui.printReadSuccess(tasks.size());
         } catch (IOException e) {
             ui.printReadFailure(e);

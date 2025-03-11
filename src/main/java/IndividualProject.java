@@ -4,8 +4,6 @@ import storage.TaskReader;
 import storage.TaskWriter;
 import task.TaskList;
 
-// TODO: Writing doesn't work
-
 public class IndividualProject {
 
     private static final String PROJECT_DIRECTORY = System.getProperty("user.dir");

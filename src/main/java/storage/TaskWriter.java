@@ -16,7 +16,7 @@ public class TaskWriter {
 
         try {
             Path dataDirectory = Paths.get(dataPathString);
-            Files.createDirectories(dataDirectory);
+            Files.createDirectories(dataDirectory.getParent());
 
             Path dataPath = Paths.get(dataPathString);
             Files.write(dataPath, tasks.getRawString().getBytes(),

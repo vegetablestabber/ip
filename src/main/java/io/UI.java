@@ -50,16 +50,24 @@ public class UI {
         System.out.println("Reading from local data...");
     }
 
+    public void printDidNotRead() {
+        System.out.println("No file is available.");
+    }
+
+    public void printFileReadIsEmpty() {
+        System.out.println("File is empty.");
+    }
+
     public void printReadSuccess(int count) {
         System.out.println("Successfully read *" + count + "* tasks!");
     }
 
     public void printReadFailure(Exception e) {
-        System.out.println("Error: " + e + "\nUnable to read any tasks.");
+        System.out.println("Unable to read any tasks.\n(Error: " + e + ")");
     }
 
     public void printWriteInitialisation() {
-        System.out.println("Writing to local data...");
+        System.out.println("\nWriting to local data...");
     }
 
     public void printWriteSuccess(int count) {
@@ -67,7 +75,7 @@ public class UI {
     }
 
     public void printWriteFailure(Exception e) {
-        System.out.println("Error: " + e + "\nUnable to write any tasks.");
+        System.out.println("Unable to write any tasks.\n(Error: " + e + ")");
     }
 
 }
