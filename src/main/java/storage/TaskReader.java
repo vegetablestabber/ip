@@ -33,13 +33,14 @@ public class TaskReader {
             task = Optional.of(new ToDo(description));
             break;
         case Deadline.LINE_ID:
-            String dueByDateTime = args[3];
-            task = Optional.of(new Deadline(description, dueByDateTime));
+            String dueDateString = args[3];
+            task = Optional.of(new Deadline(description, dueDateString));
             break;
         case Event.LINE_ID:
-            String startDueTime = args[3];
-            String endDateTime = args[4];
-            task = Optional.of(new Event(description, startDueTime, endDateTime));
+            String startDateString = args[3];
+            String endDateString = args[4];
+
+            task = Optional.of(new Event(description, startDateString, endDateString));
             break;
         }
 

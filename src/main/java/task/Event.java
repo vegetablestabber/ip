@@ -1,32 +1,35 @@
 package task;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.StringJoiner;
 
 import storage.TaskReader;
+import storage.TaskWriter;
 
 public class Event extends Task {
 
-    private final String startDateTime;
-    private final String endDateTime;
+    private final LocalDate startDate;
+    private final LocalDate endDate;
 
     public static final String LINE_ID = "E";
 
-    public Event(String description, String startDateTime, String endDateTime) {
+    public Event(String description, String startDateString, String endDateString) throws DateTimeParseException {
         super(description);
-        this.startDateTime = startDateTime;
-        this.endDateTime = endDateTime;
+        this.startDate = LocalDate.parse(startDateString);
+        this.endDate = LocalDate.parse(endDateString);
     }
 
-    private Event(Task event, String startDateTime, String endDateTime) {
+    private Event(Task event, LocalDate startDate, LocalDate endDate) {
         super(event);
-        this.startDateTime = startDateTime;
-        this.endDateTime = endDateTime;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     @Override
     public String toString() {
-        return "[E]" + super.toString() + " (from: " + startDateTime
-            + " to: " + endDateTime + ")";
+        return "[E]" + super.toString() + " (from: " + startDate
+            + " to: " + endDate + ")";
     }
 
     @Override
@@ -34,20 +37,20 @@ public class Event extends Task {
         StringJoiner sj = new StringJoiner(TaskReader.DELIMITER);
         sj.add(LINE_ID);
         sj.add(super.getRawString());
-        sj.add(startDateTime);
-        sj.add(endDateTime);
+        sj.add(TaskWriter.formatDate(startDate));
+        sj.add(TaskWriter.formatDate(endDate));
 
         return sj.toString();
     }
 
     @Override
     public Event markAsComplete() {
-        return new Event(super.markAsComplete(), this.startDateTime, this.endDateTime);
+        return new Event(super.markAsComplete(), this.startDate, this.endDate);
     }
 
     @Override
     public Event markAsIncomplete() {
-        return new Event(super.markAsIncomplete(), this.startDateTime, this.endDateTime);
+        return new Event(super.markAsIncomplete(), this.startDate, this.endDate);
     }
 
 }

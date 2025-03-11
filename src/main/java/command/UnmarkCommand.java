@@ -1,6 +1,5 @@
 package command;
 
-import error.MissingArgumentException;
 import task.Task;
 import task.TaskList;
 
@@ -8,8 +7,8 @@ public class UnmarkCommand extends ModifyCommand {
 
     public static final String CLI_REPRESENTATION = "unmark";
 
-    public UnmarkCommand(String[] args, TaskList tasks) throws MissingArgumentException,
-    IndexOutOfBoundsException, NumberFormatException {
+    public UnmarkCommand(String[] args, TaskList tasks)
+        throws IllegalArgumentException, IndexOutOfBoundsException {
         super(args, tasks);
     }
 
@@ -23,7 +22,7 @@ public class UnmarkCommand extends ModifyCommand {
     }
 
     @Override
-    public String getOutput() throws MissingArgumentException, NumberFormatException {
+    public String getOutput() throws IllegalArgumentException {
         return "Updated: " + this.getTask();
     }
 

@@ -1,23 +1,26 @@
 package task;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.StringJoiner;
 
 import storage.TaskReader;
+import storage.TaskWriter;
 
 public class Deadline extends Task {
 
-    private final String dueByDateTime;
+    private final LocalDate dueDate;
 
     public static final String LINE_ID = "D";
 
-    public Deadline(String description, String dueByDateTime) {
+    public Deadline(String description, String dueDateString) throws DateTimeParseException {
         super(description);
-        this.dueByDateTime = dueByDateTime;
+        this.dueDate = LocalDate.parse(dueDateString);
     }
 
-    private Deadline(Task deadline, String dueByDateTime) {
+    private Deadline(Task deadline, LocalDate dueDate) {
         super(deadline);
-        this.dueByDateTime = dueByDateTime;
+        this.dueDate = dueDate;
     }
 
     @Override
@@ -25,24 +28,24 @@ public class Deadline extends Task {
         StringJoiner sj = new StringJoiner(TaskReader.DELIMITER);
         sj.add(LINE_ID);
         sj.add(super.getRawString());
-        sj.add(dueByDateTime);
+        sj.add(TaskWriter.formatDate(dueDate));
 
         return sj.toString();
     }
 
     @Override
     public String toString() {
-        return "[D]" + super.toString() + " (by: " + dueByDateTime + ")";
+        return "[D]" + super.toString() + " (by: " + dueDate + ")";
     }
 
     @Override
     public Deadline markAsComplete() {
-        return new Deadline(super.markAsComplete(), this.dueByDateTime);
+        return new Deadline(super.markAsComplete(), this.dueDate);
     }
 
     @Override
     public Deadline markAsIncomplete() {
-        return new Deadline(super.markAsIncomplete(), this.dueByDateTime);
+        return new Deadline(super.markAsIncomplete(), this.dueDate);
     }
 
 }
