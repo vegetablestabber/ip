@@ -1,6 +1,5 @@
 package command;
 
-import error.MissingArgumentException;
 import task.Task;
 import task.TaskList;
 
@@ -8,8 +7,8 @@ public class DeleteCommand extends ModifyCommand {
 
     public static final String CLI_REPRESENTATION = "delete";
 
-    public DeleteCommand(String[] args, TaskList tasks) throws MissingArgumentException,
-    IndexOutOfBoundsException, NumberFormatException {
+    public DeleteCommand(String[] args, TaskList tasks)
+        throws IllegalArgumentException, IndexOutOfBoundsException {
         super(args, tasks);
     }
 
@@ -23,7 +22,7 @@ public class DeleteCommand extends ModifyCommand {
     }
 
     @Override
-    public String getOutput() throws MissingArgumentException, NumberFormatException {
+    public String getOutput() throws IllegalArgumentException {
         return "Deleted: " + this.getTask();
     }
 
