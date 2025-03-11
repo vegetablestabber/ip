@@ -12,11 +12,22 @@ public class Task {
     private final String description;
     private final boolean isComplete;
 
+    /**
+     * Constructs a Task with the specified description and completion status.
+     *
+     * @param description The description of the task.
+     * @param isComplete The completion status of the task.
+     */
     private Task(String description, boolean isComplete) {
         this.description = description;
         this.isComplete = isComplete;
     }
 
+    /**
+     * Constructs a Task from an existing task.
+     *
+     * @param task The existing task.
+     */
     protected Task(Task task) {
         this(task.description, task.isComplete);
     }

@@ -13,8 +13,8 @@ public class TaskList {
 
     private final ArrayList<Task> list;
 
-    private TaskList(ArrayList<Task> list) {
-        this.list = list;
+    private TaskList(List<Task> list) {
+        this.list = new ArrayList<>(list);
     }
 
     /**
@@ -22,16 +22,6 @@ public class TaskList {
      */
     public TaskList() {
         this(new ArrayList<>());
-    }
-
-    /**
-     * Returns a copy of the given TaskList.
-     *
-     * @param tasks The TaskList to copy.
-     * @return The copied TaskList.
-     */
-    public static TaskList copyOf(TaskList tasks) {
-        return new TaskList(new ArrayList<>(tasks.list));
     }
 
     /**
@@ -69,13 +59,26 @@ public class TaskList {
         return this.list.size();
     }
 
-    private <T> T validateAndMapTask(int oneBasedIndex, BiFunction<Integer, Task, T> successAction)
+    /**
+     * Validates and maps a task based on the provided index and actions.
+     *
+     * @param <T> The type of the result.
+     * @param oneBasedIndex The one-based index of the task.
+     * @param transformAction The action to transform the task.
+     * @param successAction The action to perform on the transformed task.
+     * @return The result of the success action.
+     * @throws IllegalStateException If there are no tasks.
+     * @throws IndexOutOfBoundsException If the index is out of bounds.
+     */
+    private <T> T validateAndMapTask(int oneBasedIndex,
+            BiFunction<Integer, Task, Task> transformAction, Function<Task, T> successAction)
             throws IllegalStateException, IndexOutOfBoundsException {
         int index = oneBasedIndex - 1;
 
         if (index >= 0 && index < this.list.size()) {
             Task task = this.list.get(index);
-            return successAction.apply(index, task);
+            Task updatedTask = transformAction.apply(index, task);
+            return successAction.apply(updatedTask);
         }
 
         if (this.list.isEmpty()) {
@@ -94,7 +97,7 @@ public class TaskList {
      * @throws IndexOutOfBoundsException If the index is out of bounds.
      */
     public Task get(int oneBasedIndex) throws IndexOutOfBoundsException {
-        return this.validateAndMapTask(oneBasedIndex, (index, task) -> task);
+        return this.validateAndMapTask(oneBasedIndex, (index, task) -> task, task -> task);
     }
 
     /**
@@ -107,66 +110,72 @@ public class TaskList {
     }
 
     /**
-     * Deletes a task from the task list.
+     * Deletes a task from the task list and performs an action on the deleted task.
      *
      * @param oneBasedIndex The one-based index of the task to be deleted.
      * @param successAction The action to be performed after deletion.
-     * @param <T> The type of the result.
+     * @param <T>           The type of the result.
      * @return The result of the success action.
      * @throws IndexOutOfBoundsException If the index is out of bounds.
      */
-    public <T> T delete(int oneBasedIndex, Function<Task, T> successAction)
+    public <T> T deleteAndMapTask(int oneBasedIndex, Function<Task, T> successAction)
             throws IndexOutOfBoundsException {
         return validateAndMapTask(oneBasedIndex, (index, task) -> {
             this.list.remove(task);
-            return successAction.apply(task);
-        });
+            return task;
+        }, successAction);
     }
 
     /**
-     * Marks a task as complete.
+     * Marks a task as complete and performs an action on the updated task.
      *
      * @param oneBasedIndex The one-based index of the task to be marked.
      * @param successAction The action to be performed after marking.
-     * @param <T> The type of the result.
+     * @param <T>           The type of the result.
      * @return The result of the success action.
      * @throws IndexOutOfBoundsException If the index is out of bounds.
      */
-    public <T> T mark(int oneBasedIndex, Function<Task, T> successAction)
+    public <T> T markAndMapTask(int oneBasedIndex, Function<Task, T> successAction)
             throws IndexOutOfBoundsException {
         return validateAndMapTask(oneBasedIndex, (index, task) -> {
             Task updatedTask = task.markAsComplete();
             this.list.set(index, updatedTask);
 
-            return successAction.apply(updatedTask);
-        });
+            return updatedTask;
+        }, successAction);
     }
 
     /**
-     * Unmarks a task as incomplete.
+     * Unmarks a task as incomplete and performs an action on the updated task.
      *
      * @param oneBasedIndex The one-based index of the task to be unmarked.
      * @param successAction The action to be performed after unmarking.
-     * @param <T> The type of the result.
+     * @param <T>           The type of the result.
      * @return The result of the success action.
      * @throws IndexOutOfBoundsException If the index is out of bounds.
      */
-    public <T> T unmark(int oneBasedIndex, Function<Task, T> successAction)
+    public <T> T unmarkAndMapTask(int oneBasedIndex, Function<Task, T> successAction)
             throws IndexOutOfBoundsException {
         return validateAndMapTask(oneBasedIndex, (index, task) -> {
             Task updatedTask = task.markAsIncomplete();
             this.list.set(index, updatedTask);
 
-            return successAction.apply(updatedTask);
-        });
+            return updatedTask;
+        }, successAction);
     }
 
+    /**
+     * Filters the tasks in the task list based on a keyword.
+     *
+     * @param keyword The keyword to filter tasks by.
+     * @return A new TaskList containing tasks that match the keyword.
+     */
     public TaskList filter(String keyword) {
         List<Task> filteredTasks = this.list.parallelStream()
-            .filter(task -> task.getDescription().contains(keyword))
-            .toList();
+                .filter(task -> task.getDescription().contains(keyword))
+                .toList();
 
-        return new TaskList(new ArrayList<>(filteredTasks));
+        return new TaskList(filteredTasks);
     }
 
 }

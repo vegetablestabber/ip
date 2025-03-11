@@ -1,10 +1,10 @@
-package command;
+package command.add;
 
 import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 
-import io.LineReader;
 import task.Event;
+import ui.InputReader;
 
 /**
  * Represents a command to add an event task.
@@ -26,12 +26,13 @@ public class AddEventCommand extends AddCommand {
      * Returns the event task that was added.
      *
      * @return The added event task.
-     * @throws AppException If there is an error getting the added task.
+     * @throws IllegalArgumentException If there is an illegal argument.
+     * @throws DateTimeParseException If date strings are not formatted properly.
      */
     @Override
     public Event getAddedTask() throws IllegalArgumentException, DateTimeParseException {
         String[] requiredArgs = { "/from", "/to" };
-        HashMap<String, String> argMap = LineReader.retriveArgMap(this.args, requiredArgs);
+        HashMap<String, String> argMap = InputReader.retriveArgMap(this.args, requiredArgs);
 
         String description = argMap.get("");
         String startDateString = argMap.get("/from");

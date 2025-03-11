@@ -20,6 +20,11 @@ public class ToDo extends Task {
         super(description);
     }
 
+    /**
+     * Constructs a ToDo from an existing task.
+     *
+     * @param todo The existing task.
+     */
     private ToDo(Task todo) {
         super(todo);
     }

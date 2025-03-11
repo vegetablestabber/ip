@@ -1,4 +1,6 @@
-package command;
+package command.general;
+
+import command.Command;
 
 /**
  * Represents a command to exit the application.

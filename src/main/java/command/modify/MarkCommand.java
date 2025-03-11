@@ -1,4 +1,4 @@
-package command;
+package command.modify;
 
 import task.Task;
 import task.TaskList;

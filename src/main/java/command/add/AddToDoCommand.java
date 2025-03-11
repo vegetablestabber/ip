@@ -1,7 +1,9 @@
-package command;
+package command.add;
 
-import io.LineReader;
+import java.time.format.DateTimeParseException;
+
 import task.ToDo;
+import ui.InputReader;
 
 /**
  * Represents a command to add a to-do task.
@@ -23,11 +25,12 @@ public class AddToDoCommand extends AddCommand {
      * Returns the to-do task that was added.
      *
      * @return The added to-do task.
-     * @throws AppException If there is an error getting the added task.
+     * @throws IllegalArgumentException If there is an illegal argument.
+     * @throws DateTimeParseException If date strings are not formatted properly.
      */
     @Override
     public ToDo getAddedTask() throws IllegalArgumentException {
-        String description = LineReader.retriveArgValue(this.args);
+        String description = InputReader.retriveStringArg(this.args);
         ToDo toDo = new ToDo(description);
 
         return toDo;

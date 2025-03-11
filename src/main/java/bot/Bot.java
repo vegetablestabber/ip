@@ -2,17 +2,17 @@ package bot;
 
 import java.time.format.DateTimeParseException;
 
-import command.AddCommand;
-import command.AddDeadlineCommand;
-import command.AddEventCommand;
-import command.AddToDoCommand;
 import command.Command;
-import command.DeleteCommand;
-import command.ExitCommand;
-import command.FindCommand;
-import command.ListCommand;
-import command.MarkCommand;
-import command.UnmarkCommand;
+import command.add.AddCommand;
+import command.add.AddDeadlineCommand;
+import command.add.AddEventCommand;
+import command.add.AddToDoCommand;
+import command.general.ExitCommand;
+import command.general.FindCommand;
+import command.general.ListCommand;
+import command.modify.DeleteCommand;
+import command.modify.MarkCommand;
+import command.modify.UnmarkCommand;
 import task.TaskList;
 
 /**
@@ -141,7 +141,7 @@ public class Bot {
     private DeleteCommand deleteTask(String[] args)
         throws IllegalArgumentException, IndexOutOfBoundsException {
         DeleteCommand command = new DeleteCommand(args, this.tasks);
-        return this.tasks.delete(command.getTaskIndex(),
+        return this.tasks.deleteAndMapTask(command.getTaskIndex(),
             task -> command.updateTask(task));
     }
 
@@ -156,7 +156,7 @@ public class Bot {
     private MarkCommand markTask(String[] args)
             throws IllegalArgumentException, IndexOutOfBoundsException {
         MarkCommand command = new MarkCommand(args, this.tasks);
-        return this.tasks.mark(command.getTaskIndex(),
+        return this.tasks.markAndMapTask(command.getTaskIndex(),
             task -> command.updateTask(task));
     }
 
@@ -171,7 +171,7 @@ public class Bot {
     private UnmarkCommand unmarkTask(String[] args)
         throws IllegalArgumentException, IndexOutOfBoundsException {
         UnmarkCommand command = new UnmarkCommand(args, this.tasks);
-        return this.tasks.unmark(command.getTaskIndex(),
+        return this.tasks.unmarkAndMapTask(command.getTaskIndex(),
             task -> command.updateTask(task));
     }
 
@@ -184,7 +184,7 @@ public class Bot {
     private ListCommand listTasks(String[] args) {
         return new ListCommand(args, this.tasks);
     }
-    
+
     /**
      * Finds tasks filtered by their descriptions containing a given keyword.
      *

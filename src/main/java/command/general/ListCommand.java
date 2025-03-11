@@ -1,5 +1,6 @@
-package command;
+package command.general;
 
+import command.Command;
 import task.TaskList;
 
 /**

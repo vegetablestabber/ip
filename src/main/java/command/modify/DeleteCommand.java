@@ -1,4 +1,4 @@
-package command;
+package command.modify;
 
 import task.Task;
 import task.TaskList;
@@ -42,10 +42,9 @@ public class DeleteCommand extends ModifyCommand {
      * Returns the output message for the delete command.
      *
      * @return The output message.
-     * @throws IllegalArgumentException If there is an illegal argument.
      */
     @Override
-    public String getOutput() throws IllegalArgumentException {
+    public String getOutput() {
         return "Deleted: " + this.getTask();
     }
 

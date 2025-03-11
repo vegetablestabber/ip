@@ -1,5 +1,6 @@
-package command;
+package command.add;
 
+import command.Command;
 import task.Task;
 
 /**

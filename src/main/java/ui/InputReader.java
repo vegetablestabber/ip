@@ -1,4 +1,4 @@
-package io;
+package ui;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,20 +9,21 @@ import java.util.stream.IntStream;
  * Utility class for reading and parsing command line arguments.
  * Provides methods to extract values and create argument maps from command input.
  */
-public class LineReader {
+public class InputReader {
 
     /**
      * Combines an array of strings with spaces between them.
      *
      * @param array The array of strings to combine.
-     * @param start The starting index in the array (inclusive).
-     * @param endExclusive The ending index in the array (exclusive).
+     * @param startIndex The starting index in the array (inclusive).
+     * @param endExclusivestartIndex The ending index in the array (exclusive).
      * @return The combined string with spaces between elements.
      * @throws IllegalArgumentException If the resulting string is empty.
      */
-    private static String combineSpacedStrings(String[] array, int start, int endExclusive) {
+    private static String combineSpacedStrings(String[] array, int startIndex,
+        int endExclusivestartIndex) {
         StringJoiner sj = new StringJoiner(" ");
-        IntStream.range(start, endExclusive)
+        IntStream.range(startIndex, endExclusivestartIndex)
                 .forEach(i -> sj.add(array[i]));
         String str = sj.toString().trim();
 
@@ -37,7 +38,7 @@ public class LineReader {
      * @param startIndex The starting index to begin the search.
      * @param endExclusiveIndex The ending index to end the search (exclusive).
      * @return The index of the argument if found.
-     * @throws MissingArgumentException If the argument is not found in the array.
+     * @throws IllegalArgumentException If there is an illegal argument.
      */
     private static int indexOfArg(String arg, String[] array, int startIndex,
         int endExclusiveIndex) throws IllegalArgumentException  {
@@ -56,7 +57,7 @@ public class LineReader {
      * @return The combined string value of all arguments after index 0.
      * @throws IllegalArgumentException If there is an illegal argument.
      */
-    public static String retriveArgValue(String[] givenArgs) throws IllegalArgumentException {
+    public static String retriveStringArg(String[] givenArgs) throws IllegalArgumentException {
         String argValue = combineSpacedStrings(givenArgs, 1, givenArgs.length);
 
         if (argValue.isEmpty()) {
@@ -74,7 +75,7 @@ public class LineReader {
      * @throws IllegalArgumentException If there is an illegal argument.
      */
     public static int retriveIntArg(String[] givenArgs) throws IllegalArgumentException {
-        String argValue = retriveArgValue(givenArgs);
+        String argValue = retriveStringArg(givenArgs);
 
         try {
             return Integer.parseInt(argValue);
@@ -103,6 +104,8 @@ public class LineReader {
 
         // Number of split strings from input
         int givenArgCount = givenArgs.length;
+
+        // Argument map to store argument names and values
         HashMap<String, String> argMap = new HashMap<>(requiredArgCount);
 
         // Indices of starting argument values within string array from split input

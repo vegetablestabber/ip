@@ -20,8 +20,7 @@ public abstract class Command {
      * Returns the output message for the command.
      *
      * @return The output message.
-     * @throws IllegalArgumentException If there is an illegal argument.
      */
-    public abstract String getOutput() throws IllegalArgumentException;
+    public abstract String getOutput();
 
 }

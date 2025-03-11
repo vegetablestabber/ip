@@ -31,6 +31,13 @@ public class Event extends Task {
         this.endDate = LocalDate.parse(endDateString);
     }
 
+    /**
+     * Constructs an Event from an existing task and dates.
+     *
+     * @param event The existing task.
+     * @param startDate The start date of the event.
+     * @param endDate The end date of the event.
+     */
     private Event(Task event, LocalDate startDate, LocalDate endDate) {
         super(event);
         this.startDate = startDate;

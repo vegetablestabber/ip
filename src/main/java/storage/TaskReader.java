@@ -9,12 +9,12 @@ import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
-import io.UI;
 import task.Deadline;
 import task.Event;
 import task.Task;
 import task.TaskList;
 import task.ToDo;
+import ui.UI;
 
 /**
  * Reads tasks from a file.
@@ -64,45 +64,65 @@ public class TaskReader {
      * Reads the tasks from the specified file.
      *
      * @param dataPathString The path to the file.
-     * @param ui The UI for displaying messages.
      * @return The list of tasks.
      */
-    public static TaskList read(String dataPathString, UI ui) {
-        ui.printReadInitialisation();
-
-        BufferedReader reader;
-        TaskList tasks = new TaskList();
+    public static TaskList read(String dataPathString) {
+        UI.printReadInitialisation();
 
         try {
             Path dataPath = Paths.get(dataPathString);
             Files.createDirectories(dataPath.getParent());
 
             if (Files.notExists(dataPath)) {
-                ui.printDidNotRead();
+                UI.printDidNotRead();
                 return new TaskList();
             }
 
-            reader = new BufferedReader(new FileReader(dataPathString));
-            boolean isEmpty = reader.readLine() == null;
-            reader.close();
-
-            if (isEmpty) {
-                ui.printFileReadIsEmpty();
+            if (isFileEmpty(dataPathString)) {
+                UI.printFileReadIsEmpty();
                 return new TaskList();
             }
 
-            reader = new BufferedReader(new FileReader(dataPathString));
-            reader.lines().forEach(line -> {
-                Optional<Task> task = readTaskFromLine(line);
-                task.ifPresent(t -> tasks.add(t));
-            });
-
-            reader.close();
-            ui.printReadSuccess(tasks.size());
+            return parseTasks(dataPathString);
         } catch (IOException e) {
-            ui.printReadFailure(e);
+            UI.printReadFailure(e);
             return new TaskList();
         }
+    }
+
+    /**
+     * Checks if the file is empty.
+     *
+     * @param dataPathString The path to the file.
+     * @return True if the file is empty, false otherwise.
+     * @throws IOException If an I/O error occurs.
+     */
+    private static boolean isFileEmpty(String dataPathString) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(dataPathString));
+        boolean isEmpty = reader.readLine() == null;
+        reader.close();
+
+        return isEmpty;
+    }
+
+    /**
+     * Parses tasks from the file.
+     *
+     * @param dataPathString The path to the file.
+     * @return The list of tasks.
+     * @throws IOException If an I/O error occurs.
+     */
+    private static TaskList parseTasks(String dataPathString) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(dataPathString));
+        TaskList tasks = new TaskList();
+
+        reader.lines().forEach(line -> {
+            Optional<Task> task = readTaskFromLine(line);
+            task.ifPresent(t -> tasks.add(t));
+        });
+
+        reader.close();
+        UI.printReadSuccess(tasks.size());
 
         return tasks;
     }

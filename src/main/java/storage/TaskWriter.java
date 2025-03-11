@@ -8,8 +8,8 @@ import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import io.UI;
 import task.TaskList;
+import ui.UI;
 
 /**
  * Writes tasks to a file.
@@ -33,10 +33,9 @@ public class TaskWriter {
      *
      * @param tasks The list of tasks.
      * @param dataPathString The path to the file.
-     * @param ui The UI for displaying messages.
      */
-    public static void write(TaskList tasks, String dataPathString, UI ui) {
-        ui.printWriteInitialisation();
+    public static void write(TaskList tasks, String dataPathString) {
+        UI.printWriteInitialisation();
 
         try {
             Path dataDirectory = Paths.get(dataPathString);
@@ -46,9 +45,9 @@ public class TaskWriter {
             Files.write(dataPath, tasks.getRawString().getBytes(),
                     StandardOpenOption.CREATE, StandardOpenOption.WRITE);
 
-            ui.printWriteSuccess(tasks.size());
+            UI.printWriteSuccess(tasks.size());
         } catch (IOException e) {
-            ui.printWriteFailure(e);
+            UI.printWriteFailure(e);
         }
     }
 

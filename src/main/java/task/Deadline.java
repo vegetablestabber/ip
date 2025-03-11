@@ -28,6 +28,12 @@ public class Deadline extends Task {
         this.dueDate = LocalDate.parse(dueDateString);
     }
 
+    /**
+     * Constructs a Deadline from an existing task and due date.
+     *
+     * @param deadline The existing task.
+     * @param dueDate The due date of the deadline.
+     */
     private Deadline(Task deadline, LocalDate dueDate) {
         super(deadline);
         this.dueDate = dueDate;
