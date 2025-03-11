@@ -5,6 +5,7 @@ import task.Task;
 import task.TaskList;
 
 public class DeleteCommand extends ModifyCommand {
+
     public static final String CLI_REPRESENTATION = "delete";
 
     public DeleteCommand(String[] args, TaskList tasks) throws MissingArgumentException,
@@ -25,4 +26,5 @@ public class DeleteCommand extends ModifyCommand {
     public String getOutput() throws MissingArgumentException, NumberFormatException {
         return "Deleted: " + this.getTask();
     }
+
 }

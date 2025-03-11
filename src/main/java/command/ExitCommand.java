@@ -1,6 +1,7 @@
 package command;
 
 public class ExitCommand extends Command {
+
     public static final String CLI_REPRESENTATION = "bye";
 
     public ExitCommand(String[] args) {
@@ -11,4 +12,5 @@ public class ExitCommand extends Command {
     public String getOutput() {
         return "\nYou are dismissed.";
     }
+
 }

@@ -1,6 +1,7 @@
 package error;
 
 public class MissingArgumentException extends AppException {
+
     public MissingArgumentException(String arg) {
         super("'" + arg + "' argument missing.");
     }
@@ -8,4 +9,5 @@ public class MissingArgumentException extends AppException {
     public MissingArgumentException() {
         super("No parameter provided.");
     }
+
 }

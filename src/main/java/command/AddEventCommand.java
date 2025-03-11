@@ -7,6 +7,7 @@ import io.LineReader;
 import task.Event;
 
 public class AddEventCommand extends AddCommand {
+
     public static final String CLI_REPRESENTATION = "event";
 
     public AddEventCommand(String[] args) {
@@ -25,4 +26,5 @@ public class AddEventCommand extends AddCommand {
 
         return event;
     }
+
 }

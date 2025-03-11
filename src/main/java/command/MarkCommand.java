@@ -5,6 +5,7 @@ import task.Task;
 import task.TaskList;
 
 public class MarkCommand extends ModifyCommand {
+
     public static final String CLI_REPRESENTATION = "mark";
 
     public MarkCommand(String[] args, TaskList tasks) throws MissingArgumentException,
@@ -25,4 +26,5 @@ public class MarkCommand extends ModifyCommand {
     public String getOutput() throws MissingArgumentException, NumberFormatException {
         return "Updated: " + this.getTask();
     }
+
 }

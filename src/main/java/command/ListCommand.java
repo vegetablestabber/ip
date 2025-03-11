@@ -3,6 +3,7 @@ package command;
 import task.TaskList;
 
 public class ListCommand extends Command {
+
     private final TaskList tasks;
 
     public static final String CLI_REPRESENTATION = "list";
@@ -16,4 +17,5 @@ public class ListCommand extends Command {
     public String getOutput() {
         return this.tasks.toString();
     }
+
 }

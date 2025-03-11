@@ -7,6 +7,7 @@ import task.TaskList;
 // TODO: Writing doesn't work
 
 public class IndividualProject {
+
     private static final String PROJECT_DIRECTORY = System.getProperty("user.dir");
     private static final String DATA_PATH_STRING = PROJECT_DIRECTORY + "/data/" + "tasks.csv";
 
@@ -19,4 +20,5 @@ public class IndividualProject {
 
         TaskWriter.write(bot.getTasks(), DATA_PATH_STRING, ui);
     }
+
 }

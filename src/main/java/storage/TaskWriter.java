@@ -10,6 +10,7 @@ import io.UI;
 import task.TaskList;
 
 public class TaskWriter {
+
     public static void write(TaskList tasks, String dataPathString, UI ui) {
         ui.printWriteInitialisation();
 
@@ -26,4 +27,5 @@ public class TaskWriter {
             ui.printWriteFailure(e);
         }
     }
+
 }

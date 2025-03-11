@@ -3,6 +3,7 @@ package command;
 import error.AppException;
 
 public abstract class Command {
+
     protected final String[] args;
 
     public Command(String[] args) {
@@ -10,4 +11,5 @@ public abstract class Command {
     }
 
     public abstract String getOutput() throws AppException;
+
 }

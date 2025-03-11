@@ -5,6 +5,7 @@ import io.LineReader;
 import task.ToDo;
 
 public class AddToDoCommand extends AddCommand {
+
     public static final String CLI_REPRESENTATION = "todo";
 
     public AddToDoCommand(String[] args) {
@@ -18,4 +19,5 @@ public class AddToDoCommand extends AddCommand {
 
         return toDo;
     }
+
 }
