@@ -5,13 +5,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.function.Consumer;
 
+import io.UI;
 import task.TaskList;
 
 public class TaskWriter {
-    public static void writeData(TaskList tasks, String dataPathString,
-            Consumer<Integer> successAction, Runnable failureAction) {
+    public static void write(TaskList tasks, String dataPathString, UI ui) {
+        ui.printWriteInitialisation();
+
         try {
             Path dataDirectory = Paths.get(dataPathString);
             Files.createDirectories(dataDirectory);
@@ -20,10 +21,9 @@ public class TaskWriter {
             Files.write(dataPath, tasks.getRawString().getBytes(),
                     StandardOpenOption.CREATE, StandardOpenOption.WRITE);
 
-            successAction.accept(tasks.size());
+            ui.printWriteSuccess(tasks.size());
         } catch (IOException e) {
-            System.out.println(e);
-            failureAction.run();
+            ui.printWriteFailure(e);
         }
     }
 }

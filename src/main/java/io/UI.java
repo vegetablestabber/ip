@@ -6,22 +6,11 @@ import bot.Bot;
 import command.Command;
 import command.ExitCommand;
 import error.AppException;
-import storage.TaskReader;
-import storage.TaskWriter;
-import task.TaskList;
 
 public class UI {
 
     public static final String LOGO = "     ______ ____________________\n" + "    / __/ //_/ __/ __/_  __/ __/\n"
             + "   _\\ \\/ ,< / _// _/  / / _\\ \\  \n" + "  /___/_/|_/___/___/ /_/ /___/  ";
-
-    public TaskList readFromStorage(String dataPathString) {
-        System.out.println("Reading from local data...");
-
-        return TaskReader.read(dataPathString,
-                count -> System.out.println("Successfully read *" + count + "* tasks!"),
-                () -> System.out.println("Unable to read any tasks."));
-    }
 
     public void connect(Bot bot) {
         greetUser();
@@ -44,14 +33,6 @@ public class UI {
         scanner.close();
     }
 
-    public void writeToStorage(TaskList tasks, String dataPathString) {
-        System.out.println("Writing to local data...");
-
-        TaskWriter.writeData(tasks, dataPathString,
-                count -> System.out.println("Successfully wrote *" + count + "* tasks!"),
-                () -> System.out.println("Unable to write any tasks."));
-    }
-
     private void greetUser() {
         System.out.println(LOGO + "\n\nBend your knee and ask what you desire.");
     }
@@ -63,6 +44,30 @@ public class UI {
 
     private boolean isUserExiting(String input) {
         return input.isEmpty() || input.equals(ExitCommand.CLI_REPRESENTATION);
+    }
+
+    public void printReadInitialisation() {
+        System.out.println("Reading from local data...");
+    }
+
+    public void printReadSuccess(int count) {
+        System.out.println("Successfully read *" + count + "* tasks!");
+    }
+
+    public void printReadFailure(Exception e) {
+        System.out.println("Error: " + e + "\nUnable to read any tasks.");
+    }
+
+    public void printWriteInitialisation() {
+        System.out.println("Writing to local data...");
+    }
+
+    public void printWriteSuccess(int count) {
+        System.out.println("Successfully wrote *" + count + "* tasks!");
+    }
+
+    public void printWriteFailure(Exception e) {
+        System.out.println("Error: " + e + "\nUnable to write any tasks.");
     }
 
 }

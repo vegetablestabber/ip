@@ -1,5 +1,7 @@
 import bot.Bot;
 import io.UI;
+import storage.TaskReader;
+import storage.TaskWriter;
 import task.TaskList;
 
 // TODO: Writing doesn't work
@@ -12,10 +14,11 @@ public class IndividualProject {
 
     public static void main(String[] args) {
         UI ui = new UI();
-        TaskList tasksFromStorage = ui.readFromStorage(DATA_PATH_STRING);
+        TaskList tasksFromStorage = TaskReader.read(DATA_PATH_STRING, ui);
 
         Bot bot = new Bot(tasksFromStorage);
         ui.connect(bot);
-        ui.writeToStorage(bot.getTasks(), DATA_PATH_STRING);
+
+        TaskWriter.write(bot.getTasks(), DATA_PATH_STRING, ui);
     }
 }

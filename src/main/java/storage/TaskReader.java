@@ -6,7 +6,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
-import java.util.function.Consumer;
+
+import io.UI;
 import task.Deadline;
 import task.Event;
 import task.Task;
@@ -47,8 +48,7 @@ public class TaskReader {
         return task;
     }
 
-    public static TaskList read(String dataPathString,
-            Consumer<Integer> successAction, Runnable failureAction) {
+    public static TaskList read(String dataPathString, UI ui) {
         BufferedReader reader;
         TaskList tasks = new TaskList();
 
@@ -61,16 +61,16 @@ public class TaskReader {
 
             if (isEmpty) {
                 reader.close();
-                failureAction.run();
+                ui.printReadInitialisation();
                 return new TaskList();
             }
 
             reader.lines().forEach(line -> readTaskFromLine(line).ifPresent(t -> tasks.add(t)));
             reader.close();
 
-            successAction.accept(tasks.size());
+            ui.printReadSuccess(tasks.size());
         } catch (IOException e) {
-            failureAction.run();
+            ui.printReadFailure(e);
             return new TaskList();
         }
 
