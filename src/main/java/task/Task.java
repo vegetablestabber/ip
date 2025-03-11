@@ -22,6 +22,10 @@ public class Task {
         this(description, false);
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     @Override
     public String toString() {
         return String.format("[%s] %s",

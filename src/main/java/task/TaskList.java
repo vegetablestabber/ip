@@ -1,6 +1,7 @@
 package task;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.IntStream;
@@ -92,6 +93,14 @@ public class TaskList {
 
             return successAction.apply(updatedTask);
         });
+    }
+
+    public TaskList filter(String keyword) {
+        List<Task> filteredTasks = this.list.parallelStream()
+            .filter(task -> task.getDescription().contains(keyword))
+            .toList();
+
+        return new TaskList(new ArrayList<>(filteredTasks));
     }
 
 }
