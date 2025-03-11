@@ -1,6 +1,5 @@
 package command;
 
-import error.MissingArgumentException;
 import task.Task;
 import task.TaskList;
 
@@ -16,12 +15,11 @@ public class DeleteCommand extends ModifyCommand {
      *
      * @param args The arguments for the command.
      * @param tasks The list of tasks.
-     * @throws MissingArgumentException If the task number is missing.
+     * @throws IllegalArgumentException If there is an illegal argument.
      * @throws IndexOutOfBoundsException If the task number is out of bounds.
-     * @throws NumberFormatException If the task number is not a valid number.
      */
-    public DeleteCommand(String[] args, TaskList tasks) throws MissingArgumentException,
-    IndexOutOfBoundsException, NumberFormatException {
+    public DeleteCommand(String[] args, TaskList tasks)
+        throws IllegalArgumentException, IndexOutOfBoundsException {
         super(args, tasks);
     }
 
@@ -44,11 +42,10 @@ public class DeleteCommand extends ModifyCommand {
      * Returns the output message for the delete command.
      *
      * @return The output message.
-     * @throws MissingArgumentException If the task number is missing.
-     * @throws NumberFormatException If the task number is not a valid number.
+     * @throws IllegalArgumentException If there is an illegal argument.
      */
     @Override
-    public String getOutput() throws MissingArgumentException, NumberFormatException {
+    public String getOutput() throws IllegalArgumentException {
         return "Deleted: " + this.getTask();
     }
 

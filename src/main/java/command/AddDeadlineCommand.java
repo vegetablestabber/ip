@@ -1,8 +1,8 @@
 package command;
 
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 
-import error.AppException;
 import io.LineReader;
 import task.Deadline;
 
@@ -28,13 +28,13 @@ public class AddDeadlineCommand extends AddCommand {
      * @throws AppException If there is an error getting the added task.
      */
     @Override
-    public Deadline getAddedTask() throws AppException {
+    public Deadline getAddedTask() throws IllegalArgumentException, DateTimeParseException {
         String[] requiredArgs = { "/by" };
         HashMap<String, String> argMap = LineReader.retriveArgMap(this.args, requiredArgs);
 
         String description = argMap.get("");
-        String dueByDateTime = argMap.get("/by");
-        Deadline deadline = new Deadline(description, dueByDateTime);
+        String dueDateString = argMap.get("/by");
+        Deadline deadline = new Deadline(description, dueDateString);
 
         return deadline;
     }

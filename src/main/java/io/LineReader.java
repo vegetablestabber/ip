@@ -5,10 +5,6 @@ import java.util.HashMap;
 import java.util.StringJoiner;
 import java.util.stream.IntStream;
 
-import error.AppException;
-import error.ArgMapForNoArgsException;
-import error.MissingArgumentException;
-
 /**
  * Utility class for reading and parsing command line arguments.
  * Provides methods to extract values and create argument maps from command input.
@@ -18,22 +14,17 @@ public class LineReader {
     /**
      * Combines an array of strings with spaces between them.
      *
-     * @param array The array of strings to combine
-     * @param startIndex The starting index in the array (inclusive)
-     * @param endExclusiveIndex The ending index in the array (exclusive)
-     * @return The combined string with spaces between elements
-     * @throws IllegalArgumentException If the resulting string is empty
+     * @param array The array of strings to combine.
+     * @param start The starting index in the array (inclusive).
+     * @param endExclusive The ending index in the array (exclusive).
+     * @return The combined string with spaces between elements.
+     * @throws IllegalArgumentException If the resulting string is empty.
      */
-    private static String combineSpacedStrings(String[] array, int startIndex,
-        int endExclusiveIndex) throws IllegalArgumentException {
+    private static String combineSpacedStrings(String[] array, int start, int endExclusive) {
         StringJoiner sj = new StringJoiner(" ");
-        IntStream.range(startIndex, endExclusiveIndex)
+        IntStream.range(start, endExclusive)
                 .forEach(i -> sj.add(array[i]));
         String str = sj.toString().trim();
-
-        if (str.isEmpty()) {
-            throw new IllegalArgumentException("Empty value provided.");
-        }
 
         return str;
     }
@@ -41,34 +32,35 @@ public class LineReader {
     /**
      * Finds the index of a specified argument in an array within a given range.
      *
-     * @param arg The argument to search for
-     * @param array The array to search in
-     * @param startIndex The starting index to begin the search
-     * @param endExclusiveIndex The ending index to end the search (exclusive)
-     * @return The index of the argument if found
-     * @throws MissingArgumentException If the argument is not found in the array
+     * @param arg The argument to search for.
+     * @param array The array to search in.
+     * @param startIndex The starting index to begin the search.
+     * @param endExclusiveIndex The ending index to end the search (exclusive).
+     * @return The index of the argument if found.
+     * @throws MissingArgumentException If the argument is not found in the array.
      */
     private static int indexOfArg(String arg, String[] array, int startIndex,
-        int endExclusiveIndex) throws MissingArgumentException {
+        int endExclusiveIndex) throws IllegalArgumentException  {
         return IntStream.range(startIndex, endExclusiveIndex)
                 .filter(i -> array[i].toLowerCase().equals(arg))
                 .findFirst()
-                .orElseThrow(() -> new MissingArgumentException(arg));
+                .orElseThrow(() ->
+                    new IllegalArgumentException("'" + arg + "' argument missing."));
     }
 
     /**
      * Retrieves the argument value for a command with a single implicit argument.
      * The value is assumed to start from index 1 of the array.
      *
-     * @param givenArgs The array of command arguments
-     * @return The combined string value of all arguments after index 0
-     * @throws MissingArgumentException If no argument value is provided
+     * @param givenArgs The array of command arguments.
+     * @return The combined string value of all arguments after index 0.
+     * @throws IllegalArgumentException If there is an illegal argument.
      */
-    public static String retriveArgValue(String[] givenArgs) throws MissingArgumentException {
+    public static String retriveArgValue(String[] givenArgs) throws IllegalArgumentException {
         String argValue = combineSpacedStrings(givenArgs, 1, givenArgs.length);
 
         if (argValue.isEmpty()) {
-            throw new MissingArgumentException();
+            throw new IllegalArgumentException("No parameter provided.");
         }
 
         return argValue;
@@ -77,33 +69,36 @@ public class LineReader {
     /**
      * Retrieves an integer argument from the command line arguments.
      *
-     * @param givenArgs The array of command arguments
-     * @return The parsed integer value
-     * @throws MissingArgumentException If no argument value is provided
-     * @throws NumberFormatException If the argument cannot be parsed as an integer
+     * @param givenArgs The array of command arguments.
+     * @return The parsed integer value.
+     * @throws IllegalArgumentException If there is an illegal argument.
      */
-    public static int retriveIntArg(String[] givenArgs)
-        throws MissingArgumentException, NumberFormatException {
+    public static int retriveIntArg(String[] givenArgs) throws IllegalArgumentException {
         String argValue = retriveArgValue(givenArgs);
-        return Integer.parseInt(argValue);
+
+        try {
+            return Integer.parseInt(argValue);
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException("'" + argValue + "' is not a number.");
+        }
     }
 
     /**
      * Creates a map of argument names to their values from the command line arguments.
      *
-     * @param givenArgs The array of command arguments
-     * @param requiredArgs The array of required argument names
-     * @param hasImplicitInitialArg Whether the command has an implicit initial argument
-     * @return A HashMap mapping argument names to their values
-     * @throws AppException If there is an error processing the arguments
+     * @param givenArgs The array of command arguments.
+     * @param requiredArgs The array of required argument names.
+     * @param hasImplicitInitialArg Whether the command has an implicit initial argument.
+     * @return A HashMap mapping argument names to their values.
+     * @throws IllegalArgumentException If there is an illegal argument.
      */
-    public static HashMap<String, String> retriveArgMap(String[] givenArgs, String[] requiredArgs,
-            boolean hasImplicitInitialArg) throws AppException {
+    public static HashMap<String, String> retriveArgMap(String[] givenArgs,
+        String[] requiredArgs, boolean hasImplicitInitialArg) throws IllegalArgumentException {
         // Number of arguments required for command
         int requiredArgCount = requiredArgs.length + (hasImplicitInitialArg ? 1 : 0);
 
         if (requiredArgs.length == 0) {
-            throw new ArgMapForNoArgsException();
+            throw new IllegalArgumentException("No arguments provided for retrieval.");
         }
 
         // Number of split strings from input
@@ -131,6 +126,10 @@ public class LineReader {
             // Combine the strings from the start index to the end index (exclusive)
             String argValue = combineSpacedStrings(givenArgs, startIndices.get(i), endIndex);
 
+            if (argValue.isEmpty()) {
+                throw new IllegalArgumentException("No parameter provided for '" + arg + "'.");
+            }
+
             // Update the argument map
             argMap.put(arg, argValue);
 
@@ -148,13 +147,13 @@ public class LineReader {
      * Creates a map of argument names to their values, assuming an implicit initial argument.
      * This is a convenience method that calls retriveArgMap with hasImplicitInitialArg set to true.
      *
-     * @param givenArgs The array of command arguments
-     * @param requiredArgs The array of required argument names
-     * @return A HashMap mapping argument names to their values
-     * @throws AppException If there is an error processing the arguments
+     * @param givenArgs The array of command arguments.
+     * @param requiredArgs The array of required argument names.
+     * @return A HashMap mapping argument names to their values.
+     * @throws IllegalArgumentException If there is an illegal argument.
      */
     public static HashMap<String, String> retriveArgMap(String[] givenArgs,
-        String[] requiredArgs) throws AppException {
+        String[] requiredArgs) throws IllegalArgumentException {
         return retriveArgMap(givenArgs, requiredArgs, true);
     }
 

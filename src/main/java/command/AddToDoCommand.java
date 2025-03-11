@@ -1,6 +1,5 @@
 package command;
 
-import error.AppException;
 import io.LineReader;
 import task.ToDo;
 
@@ -27,7 +26,7 @@ public class AddToDoCommand extends AddCommand {
      * @throws AppException If there is an error getting the added task.
      */
     @Override
-    public ToDo getAddedTask() throws AppException {
+    public ToDo getAddedTask() throws IllegalArgumentException {
         String description = LineReader.retriveArgValue(this.args);
         ToDo toDo = new ToDo(description);
 

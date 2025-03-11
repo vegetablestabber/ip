@@ -1,6 +1,5 @@
 package command;
 
-import error.AppException;
 import task.Task;
 
 /**
@@ -21,18 +20,18 @@ public abstract class AddCommand extends Command {
      * Returns the task that was added.
      *
      * @return The added task.
-     * @throws AppException If there is an error getting the added task.
+     * @throws IllegalArgumentException If there is an illegal argument.
      */
-    public abstract Task getAddedTask() throws AppException;
+    public abstract Task getAddedTask() throws IllegalArgumentException;
 
     /**
      * Returns the output message for the add command.
      *
      * @return The output message.
-     * @throws AppException If there is an error getting the output.
+     * @throws IllegalArgumentException If there is an illegal argument.
      */
     @Override
-    public String getOutput() throws AppException {
+    public String getOutput() throws IllegalArgumentException {
         return "Added: " + this.getAddedTask();
     }
 }

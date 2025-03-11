@@ -1,11 +1,12 @@
 package io;
 
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 import bot.Bot;
 import command.Command;
 import command.ExitCommand;
-import error.AppException;
+import storage.TaskWriter;
 
 /**
  * Represents the user interface for interacting with the bot.
@@ -32,10 +33,11 @@ public class UI {
             try {
                 Command command = bot.handleUserInput(input);
                 System.out.println(command.getOutput());
-            } catch (AppException e) {
-                System.err.println("App error: " + e.getMessage());
-            } catch (Exception e) {
-                System.err.println("System error: " + e.getMessage());
+            } catch (IllegalArgumentException | IndexOutOfBoundsException e) {
+                System.out.println("Error: " + e.getMessage());
+            }catch (DateTimeParseException e) {
+                System.out.println("Error: '" + e.getParsedString()
+                    + "' is not of the format '" + TaskWriter.getDateFormat() + "'.");
             }
         } while (!isUserExiting(input));
 

@@ -35,6 +35,10 @@ public class Task {
      *
      * @return The string representation of the task.
      */
+    public String getDescription() {
+        return description;
+    }
+
     @Override
     public String toString() {
         return String.format("[%s] %s",

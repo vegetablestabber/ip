@@ -1,7 +1,5 @@
 package command;
 
-import error.AppException;
-
 /**
  * Represents a command.
  */
@@ -22,8 +20,8 @@ public abstract class Command {
      * Returns the output message for the command.
      *
      * @return The output message.
-     * @throws AppException If there is an error getting the output.
+     * @throws IllegalArgumentException If there is an illegal argument.
      */
-    public abstract String getOutput() throws AppException;
+    public abstract String getOutput() throws IllegalArgumentException;
 
 }

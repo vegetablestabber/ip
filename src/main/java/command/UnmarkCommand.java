@@ -1,6 +1,5 @@
 package command;
 
-import error.MissingArgumentException;
 import task.Task;
 import task.TaskList;
 
@@ -16,12 +15,11 @@ public class UnmarkCommand extends ModifyCommand {
      *
      * @param args The arguments for the command.
      * @param tasks The list of tasks.
-     * @throws MissingArgumentException If the task number is missing.
+     * @throws IllegalArgumentException If there is an illegal argument.
      * @throws IndexOutOfBoundsException If the task number is out of bounds.
-     * @throws NumberFormatException If the task number is not a valid number.
      */
-    public UnmarkCommand(String[] args, TaskList tasks) throws MissingArgumentException,
-    IndexOutOfBoundsException, NumberFormatException {
+    public UnmarkCommand(String[] args, TaskList tasks)
+        throws IllegalArgumentException, IndexOutOfBoundsException {
         super(args, tasks);
     }
 
@@ -38,18 +36,6 @@ public class UnmarkCommand extends ModifyCommand {
     @Override
     public UnmarkCommand updateTask(Task task) {
         return new UnmarkCommand(this, task);
-    }
-
-    /**
-     * Returns the output message for the unmark command.
-     *
-     * @return The output message.
-     * @throws MissingArgumentException If the task number is missing.
-     * @throws NumberFormatException If the task number is not a valid number.
-     */
-    @Override
-    public String getOutput() throws MissingArgumentException, NumberFormatException {
-        return "Updated: " + this.getTask();
     }
 
 }

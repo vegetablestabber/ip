@@ -2,7 +2,6 @@ package command;
 
 import java.util.Optional;
 
-import error.MissingArgumentException;
 import io.LineReader;
 import task.Task;
 import task.TaskList;
@@ -28,12 +27,11 @@ public abstract class ModifyCommand extends Command {
      *
      * @param args The arguments for the command.
      * @param tasks The list of tasks.
-     * @throws MissingArgumentException If the task number is missing.
+     * @throws IllegalArgumentException If there is an illegal argument.
      * @throws IndexOutOfBoundsException If the task number is out of bounds.
-     * @throws NumberFormatException If the task number is not a valid number.
      */
-    protected ModifyCommand(String[] args, TaskList tasks) throws MissingArgumentException,
-        IndexOutOfBoundsException, NumberFormatException {
+    protected ModifyCommand(String[] args, TaskList tasks)
+        throws IllegalArgumentException, IndexOutOfBoundsException {
         this(args, tasks, LineReader.retriveIntArg(args), Optional.empty());
     }
 
@@ -63,6 +61,17 @@ public abstract class ModifyCommand extends Command {
      */
     public Task getTask() {
         return this.taskToModify.orElseGet(() -> this.tasks.get(this.taskIndex));
+    }
+  
+    /**
+     * Returns the output message for the unmark command.
+     *
+     * @return The output message.
+     * @throws IllegalArgumentException If there is an illegal argument.
+     */
+    @Override
+    public String getOutput() throws IllegalArgumentException {
+        return "Updated: " + this.getTask();
     }
 
     /**
