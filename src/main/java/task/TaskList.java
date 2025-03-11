@@ -2,7 +2,7 @@ package task;
 
 import java.util.ArrayList;
 import java.util.function.BiFunction;
-import java.util.function.Supplier;
+import java.util.function.Function;
 import java.util.stream.IntStream;
 
 public class TaskList {
@@ -66,27 +66,31 @@ public class TaskList {
         this.list.add(task);
     }
 
-    public <T> T delete(int oneBasedIndex, Supplier<T> successSupplier)
+    public <T> T delete(int oneBasedIndex, Function<Task, T> successAction)
             throws IndexOutOfBoundsException {
         return validateAndMapTask(oneBasedIndex, (index, task) -> {
             this.list.remove(task);
-            return successSupplier.get();
+            return successAction.apply(task);
         });
     }
 
-    public <T> T mark(int oneBasedIndex, Supplier<T> successSupplier)
+    public <T> T mark(int oneBasedIndex, Function<Task, T> successAction)
             throws IndexOutOfBoundsException {
         return validateAndMapTask(oneBasedIndex, (index, task) -> {
-            this.list.set(index, task.markAsComplete());
-            return successSupplier.get();
+            Task updatedTask = task.markAsComplete();
+            this.list.set(index, updatedTask);
+
+            return successAction.apply(updatedTask);
         });
     }
 
-    public <T> T unmark(int oneBasedIndex, Supplier<T> successSupplier)
+    public <T> T unmark(int oneBasedIndex, Function<Task, T> successAction)
             throws IndexOutOfBoundsException {
         return validateAndMapTask(oneBasedIndex, (index, task) -> {
-            this.list.set(index, task.markAsIncomplete());
-            return successSupplier.get();
+            Task updatedTask = task.markAsIncomplete();
+            this.list.set(index, updatedTask);
+
+            return successAction.apply(updatedTask);
         });
     }
 

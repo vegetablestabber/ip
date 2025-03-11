@@ -5,8 +5,6 @@ import storage.TaskWriter;
 import task.TaskList;
 
 // TODO: Writing doesn't work
-// TODO: Show deleted task after deletion
-// TODO: Show updated task after marking and unmarking
 
 public class IndividualProject {
     private static final String PROJECT_DIRECTORY = System.getProperty("user.dir");

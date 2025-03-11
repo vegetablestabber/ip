@@ -74,7 +74,8 @@ public class Bot {
     private DeleteCommand deleteTask(String[] args) throws NumberFormatException,
             IndexOutOfBoundsException, MissingArgumentException {
         DeleteCommand command = new DeleteCommand(args, this.tasks);
-        return this.tasks.delete(command.getTaskIndex(), () -> command);
+        return this.tasks.delete(command.getTaskIndex(),
+            task -> command.updateTask(task));
     }
 
     private ListCommand listTasks(String[] args) {
@@ -84,13 +85,15 @@ public class Bot {
     private UnmarkCommand markTask(String[] args) throws NumberFormatException,
             IndexOutOfBoundsException, MissingArgumentException {
         UnmarkCommand command = new UnmarkCommand(args, this.tasks);
-        return this.tasks.mark(command.getTaskIndex(), () -> command);
+        return this.tasks.mark(command.getTaskIndex(),
+            task -> command.updateTask(task));
     }
 
     private UnmarkCommand unmarkTask(String[] args) throws NumberFormatException,
             IndexOutOfBoundsException, MissingArgumentException {
         UnmarkCommand command = new UnmarkCommand(args, this.tasks);
-        return this.tasks.unmark(command.getTaskIndex(), () -> command);
+        return this.tasks.unmark(command.getTaskIndex(),
+            task -> command.updateTask(task));
     }
 
 }

@@ -1,25 +1,42 @@
 package command;
 
+import java.util.Optional;
+
 import error.MissingArgumentException;
 import io.LineReader;
 import task.Task;
 import task.TaskList;
 
 public abstract class ModifyCommand extends Command {
-    public final TaskList tasks;
 
-    public ModifyCommand(String[] args, TaskList tasks) {
+    private final TaskList tasks;
+    private final int taskIndex;
+    private final Optional<Task> taskToModify;
+
+    private ModifyCommand(String[] args, TaskList tasks, int taskIndex, Optional<Task> taskToModify) {
         super(args);
-        this.tasks = TaskList.copyOf(tasks);
+        this.tasks = tasks;
+        this.taskIndex = taskIndex;
+        this.taskToModify = taskToModify;
     }
 
-    public int getTaskIndex() throws MissingArgumentException,
-        IndexOutOfBoundsException,NumberFormatException {
-        return LineReader.retriveIntArg(args);
+    protected ModifyCommand(String[] args, TaskList tasks) throws MissingArgumentException,
+        IndexOutOfBoundsException, NumberFormatException {
+        this(args, tasks, LineReader.retriveIntArg(args), Optional.empty());
     }
 
-    public Task getTask() throws NumberFormatException,
-        IndexOutOfBoundsException, MissingArgumentException {
-        return this.tasks.get(getTaskIndex());
+    protected ModifyCommand(ModifyCommand command, Task task) {
+        this(command.args, command.tasks, command.taskIndex, Optional.of(task));
     }
+
+    public int getTaskIndex() {
+        return this.taskIndex;
+    }
+
+    public Task getTask() {
+        return this.taskToModify.orElseGet(() -> this.tasks.get(this.taskIndex));
+    }
+
+    public abstract ModifyCommand updateTask(Task task);
+
 }
