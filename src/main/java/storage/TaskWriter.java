@@ -9,8 +9,18 @@ import java.nio.file.StandardOpenOption;
 import io.UI;
 import task.TaskList;
 
+/**
+ * Writes tasks to a file.
+ */
 public class TaskWriter {
 
+    /**
+     * Writes the tasks to the specified file.
+     *
+     * @param tasks The list of tasks.
+     * @param dataPathString The path to the file.
+     * @param ui The UI for displaying messages.
+     */
     public static void write(TaskList tasks, String dataPathString, UI ui) {
         ui.printWriteInitialisation();
 
