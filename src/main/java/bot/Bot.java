@@ -7,6 +7,7 @@ import command.AddToDoCommand;
 import command.Command;
 import command.DeleteCommand;
 import command.ExitCommand;
+import command.FindCommand;
 import command.ListCommand;
 import command.MarkCommand;
 import command.UnmarkCommand;
@@ -40,12 +41,14 @@ public class Bot {
             return addEvent(args);
         case DeleteCommand.CLI_REPRESENTATION:
             return deleteTask(args);
-        case ListCommand.CLI_REPRESENTATION:
-            return listTasks(args);
         case MarkCommand.CLI_REPRESENTATION:
             return markTask(args);
         case UnmarkCommand.CLI_REPRESENTATION:
             return unmarkTask(args);
+        case ListCommand.CLI_REPRESENTATION:
+            return listTasks(args);
+        case FindCommand.CLI_REPRESENTATION:
+            return findTask(args);
         default:
             throw new AppException("Input '" + input + "' is invalid.");
         }
@@ -78,13 +81,9 @@ public class Bot {
             task -> command.updateTask(task));
     }
 
-    private ListCommand listTasks(String[] args) {
-        return new ListCommand(args, this.tasks);
-    }
-
-    private UnmarkCommand markTask(String[] args) throws NumberFormatException,
+    private MarkCommand markTask(String[] args) throws NumberFormatException,
             IndexOutOfBoundsException, MissingArgumentException {
-        UnmarkCommand command = new UnmarkCommand(args, this.tasks);
+        MarkCommand command = new MarkCommand(args, this.tasks);
         return this.tasks.mark(command.getTaskIndex(),
             task -> command.updateTask(task));
     }
@@ -94,6 +93,14 @@ public class Bot {
         UnmarkCommand command = new UnmarkCommand(args, this.tasks);
         return this.tasks.unmark(command.getTaskIndex(),
             task -> command.updateTask(task));
+    }
+
+    private ListCommand listTasks(String[] args) {
+        return new ListCommand(args, this.tasks);
+    }
+
+    private FindCommand findTask(String[] args) throws MissingArgumentException {
+        return new FindCommand(args, this.tasks);
     }
 
 }
