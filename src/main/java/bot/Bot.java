@@ -1,5 +1,7 @@
 package bot;
 
+import java.time.format.DateTimeParseException;
+
 import command.AddCommand;
 import command.AddDeadlineCommand;
 import command.AddEventCommand;
@@ -10,8 +12,6 @@ import command.ExitCommand;
 import command.ListCommand;
 import command.MarkCommand;
 import command.UnmarkCommand;
-import error.AppException;
-import error.MissingArgumentException;
 import task.TaskList;
 
 public class Bot {
@@ -26,7 +26,8 @@ public class Bot {
         return this.tasks;
     }
 
-    public Command handleUserInput(String input) throws AppException {
+    public Command handleUserInput(String input) throws IllegalArgumentException,
+        DateTimeParseException, IndexOutOfBoundsException {
         String[] args = input.split(" ");
 
         switch (args[0]) {
@@ -47,32 +48,34 @@ public class Bot {
         case UnmarkCommand.CLI_REPRESENTATION:
             return unmarkTask(args);
         default:
-            throw new AppException("Input '" + input + "' is invalid.");
+            throw new IllegalArgumentException("Input '" + input + "' is invalid.");
         }
     }
 
-    private <T extends AddCommand> T addTask(T command) throws AppException {
+    private <T extends AddCommand> T addTask(T command) throws IllegalArgumentException {
         this.tasks.add(command.getAddedTask());
         return command;
     }
 
-    private AddToDoCommand addToDo(String[] args) throws AppException {
+    private AddToDoCommand addToDo(String[] args) throws IllegalArgumentException {
         AddToDoCommand command = new AddToDoCommand(args);
         return addTask(command);
     }
 
-    private AddDeadlineCommand addDeadline(String[] args) throws AppException {
+    private AddDeadlineCommand addDeadline(String[] args)
+        throws IllegalArgumentException, DateTimeParseException {
         AddDeadlineCommand command = new AddDeadlineCommand(args);
         return addTask(command);
     }
 
-    private AddEventCommand addEvent(String[] args) throws AppException {
+    private AddEventCommand addEvent(String[] args)
+        throws IllegalArgumentException, DateTimeParseException {
         AddEventCommand command = new AddEventCommand(args);
         return addTask(command);
     }
 
-    private DeleteCommand deleteTask(String[] args) throws NumberFormatException,
-            IndexOutOfBoundsException, MissingArgumentException {
+    private DeleteCommand deleteTask(String[] args)
+        throws IllegalArgumentException, IndexOutOfBoundsException {
         DeleteCommand command = new DeleteCommand(args, this.tasks);
         return this.tasks.delete(command.getTaskIndex(),
             task -> command.updateTask(task));
@@ -82,15 +85,15 @@ public class Bot {
         return new ListCommand(args, this.tasks);
     }
 
-    private UnmarkCommand markTask(String[] args) throws NumberFormatException,
-            IndexOutOfBoundsException, MissingArgumentException {
+    private UnmarkCommand markTask(String[] args)
+        throws IllegalArgumentException, IndexOutOfBoundsException {
         UnmarkCommand command = new UnmarkCommand(args, this.tasks);
         return this.tasks.mark(command.getTaskIndex(),
             task -> command.updateTask(task));
     }
 
-    private UnmarkCommand unmarkTask(String[] args) throws NumberFormatException,
-            IndexOutOfBoundsException, MissingArgumentException {
+    private UnmarkCommand unmarkTask(String[] args)
+        throws IllegalArgumentException, IndexOutOfBoundsException {
         UnmarkCommand command = new UnmarkCommand(args, this.tasks);
         return this.tasks.unmark(command.getTaskIndex(),
             task -> command.updateTask(task));

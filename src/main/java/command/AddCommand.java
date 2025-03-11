@@ -1,6 +1,5 @@
 package command;
 
-import error.AppException;
 import task.Task;
 
 public abstract class AddCommand extends Command {
@@ -8,10 +7,10 @@ public abstract class AddCommand extends Command {
         super(args);
     }
 
-    public abstract Task getAddedTask() throws AppException;
+    public abstract Task getAddedTask() throws IllegalArgumentException;
 
     @Override
-    public String getOutput() throws AppException {
+    public String getOutput() throws IllegalArgumentException {
         return "Added: " + this.getAddedTask();
     }
 }

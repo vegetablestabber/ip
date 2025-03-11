@@ -1,7 +1,5 @@
 package command;
 
-import error.AppException;
-
 public abstract class Command {
 
     protected final String[] args;
@@ -10,6 +8,6 @@ public abstract class Command {
         this.args = args;
     }
 
-    public abstract String getOutput() throws AppException;
+    public abstract String getOutput() throws IllegalArgumentException;
 
 }

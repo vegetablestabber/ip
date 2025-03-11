@@ -2,7 +2,6 @@ package command;
 
 import java.util.Optional;
 
-import error.MissingArgumentException;
 import io.LineReader;
 import task.Task;
 import task.TaskList;
@@ -20,8 +19,8 @@ public abstract class ModifyCommand extends Command {
         this.taskToModify = taskToModify;
     }
 
-    protected ModifyCommand(String[] args, TaskList tasks) throws MissingArgumentException,
-        IndexOutOfBoundsException, NumberFormatException {
+    protected ModifyCommand(String[] args, TaskList tasks)
+        throws IllegalArgumentException, IndexOutOfBoundsException {
         this(args, tasks, LineReader.retriveIntArg(args), Optional.empty());
     }
 
