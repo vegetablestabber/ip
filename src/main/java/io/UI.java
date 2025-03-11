@@ -37,7 +37,7 @@ public class UI {
                 System.out.println("Error: " + e.getMessage());
             }catch (DateTimeParseException e) {
                 System.out.println("Error: '" + e.getParsedString()
-                    + "' is not of the format '" + TaskWriter.getDateFormat() + "'.");
+                    + "' is not of the format '" + TaskWriter.DATE_FORMAT + "'.");
             }
         } while (!isUserExiting(input));
 
