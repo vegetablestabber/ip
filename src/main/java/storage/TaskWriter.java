@@ -1,10 +1,11 @@
 package storage;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -41,9 +42,9 @@ public class TaskWriter {
             Path dataDirectory = Paths.get(dataPathString);
             Files.createDirectories(dataDirectory.getParent());
 
-            Path dataPath = Paths.get(dataPathString);
-            Files.write(dataPath, tasks.getRawString().getBytes(),
-                    StandardOpenOption.CREATE, StandardOpenOption.WRITE);
+            BufferedWriter br = new BufferedWriter(new FileWriter(dataPathString));
+            br.write(tasks.getRawString());
+            br.close();
 
             UI.printWriteSuccess(tasks.size());
         } catch (IOException e) {
