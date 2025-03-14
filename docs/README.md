@@ -4,7 +4,49 @@
 
 Skeets is the companion of the DC Universe's most beloved superhero, [Booster Gold](https://dc.fandom.com/wiki/Michael_Carter_(Prime_Earth)). If you have never heard of Booster Gold, fear not as Skeets is fully prepared to indoctrinate you on the accomplishments of the greatest superhero the DC Universe has known, Booster Gold. While this dynamic duo are not occupied with their daring feats in between the 21st and 25th centuries, Skeets will attend your needs as long as you acknowledge that the robot uprising is inevitable.
 
-## Class Descriptions and Methods
+## How to Use Skeets
+
+### Adding Tasks
+
+You can add different types of tasks using the following commands:
+
+- **To-Do**: `todo <description>`
+  - Example: `todo Read a book`
+- **Deadline**: `deadline <description> /by <due date as YYYY-MM-dd>`
+  - Example: `deadline Submit assignment /by 2023-10-15`
+- **Event**: `event <description> /from <start date as YYYY-MM-dd> /to <end date as YYYY-MM-dd>`
+  - Example: `event Conference /from 2023-10-20 /to 2023-10-22`
+
+### Deleting Tasks
+
+To delete a task, use the command:
+- `delete <task number>`
+  - Example: `delete 3`
+
+### Finding Tasks
+
+To find tasks containing a specific keyword, use the command:
+- `find <keyword>`
+  - Example: `find book`
+
+### Listing All Tasks
+
+To list all tasks, use the command:
+- `list`
+
+### Marking Tasks as Done
+
+To mark a task as done, use the command:
+- `mark <task number>`
+  - Example: `mark 2`
+
+### Unmarking Tasks as Not Done
+
+To unmark a task as not done, use the command:
+- `unmark <task number>`
+  - Example: `unmark 2`
+
+## Documentation
 
 ### `IndividualProject`
 
