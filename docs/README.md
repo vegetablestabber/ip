@@ -46,6 +46,11 @@ To unmark a task as not done, use the command:
 - `unmark <task number>`
   - Example: `unmark 2`
 
+### Exit the Program
+
+To exit the program, use the command:
+- `bye`
+
 ## Documentation
 
 ### `IndividualProject`
